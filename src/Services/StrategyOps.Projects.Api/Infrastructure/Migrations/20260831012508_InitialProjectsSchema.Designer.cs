@@ -11,7 +11,7 @@ using StrategyOps.Projects.Api.Infrastructure;
 namespace StrategyOps.Projects.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectsDbContext))]
-    [Migration("20260831010516_InitialProjectsSchema")]
+    [Migration("20260831012508_InitialProjectsSchema")]
     partial class InitialProjectsSchema
     {
         /// <inheritdoc />
@@ -19,6 +19,23 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.19");
+
+            modelBuilder.Entity("StrategyOps.BuildingBlocks.Inbox.InboxMessage", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Consumer")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ProcessedAtUtc")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MessageId", "Consumer");
+
+                    b.ToTable("inbox_messages", (string)null);
+                });
 
             modelBuilder.Entity("StrategyOps.BuildingBlocks.Outbox.OutboxMessage", b =>
                 {
@@ -41,15 +58,15 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("OccurredAtUtc")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("OccurredAtUtc")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Payload")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset?>("ProcessedAtUtc")
-                        .HasColumnType("TEXT");
+                    b.Property<long?>("ProcessedAtUtc")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -73,23 +90,23 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset?>("ActivatedAtUtc")
-                        .HasColumnType("TEXT");
+                    b.Property<long?>("ActivatedAtUtc")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Budget")
                         .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset?>("ClosedAtUtc")
-                        .HasColumnType("TEXT");
+                    b.Property<long?>("ClosedAtUtc")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAtUtc")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAtUtc")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FailureReason")
                         .HasMaxLength(1000)

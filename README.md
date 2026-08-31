@@ -24,7 +24,7 @@ for the full roadmap, architecture and the question-to-code map.
 |---|---|---|
 | 0 | Plan + repo skeleton | ✅ |
 | 1 | Contracts, BuildingBlocks, Projects.Api | ✅ |
-| 2 | Risk.Api, Issues.Api, RabbitMQ, choreography | ⏳ |
+| 2 | Risk.Api, Issues.Api, RabbitMQ, choreography | ✅ |
 | 3 | Kpi.Api, Benefits.Api, ProjectInitiationSaga | ⏳ |
 | 4 | Reporting.Api CQRS read model + live dashboard | ⏳ |
 | 5 | Identity (JWT), Discovery, YARP Gateway | ⏳ |

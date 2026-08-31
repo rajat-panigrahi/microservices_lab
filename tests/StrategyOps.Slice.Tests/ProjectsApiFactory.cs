@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using StrategyOps.BuildingBlocks.Outbox;
+using StrategyOps.Projects.Api;
 using StrategyOps.Projects.Api.Infrastructure;
 
 namespace StrategyOps.Slice.Tests;
@@ -24,7 +25,7 @@ namespace StrategyOps.Slice.Tests;
 /// Everything else is production wiring. A test that passes here has exercised the same
 /// serialization, validation, routing and SQL the deployed service uses.
 /// </remarks>
-public sealed class ProjectsApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public sealed class ProjectsApiFactory : WebApplicationFactory<ProjectsApiEntryPoint>, IAsyncLifetime
 {
     private readonly SqliteConnection _connection = new("Data Source=:memory:");
 

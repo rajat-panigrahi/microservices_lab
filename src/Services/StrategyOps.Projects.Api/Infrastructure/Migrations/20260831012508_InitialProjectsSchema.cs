@@ -12,6 +12,19 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "inbox_messages",
+                columns: table => new
+                {
+                    MessageId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Consumer = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    ProcessedAtUtc = table.Column<long>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_inbox_messages", x => new { x.MessageId, x.Consumer });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "objectives",
                 columns: table => new
                 {
@@ -36,8 +49,8 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                     Type = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
                     Payload = table.Column<string>(type: "TEXT", nullable: false),
                     CorrelationId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    OccurredAtUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    ProcessedAtUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    OccurredAtUtc = table.Column<long>(type: "INTEGER", nullable: false),
+                    ProcessedAtUtc = table.Column<long>(type: "INTEGER", nullable: true),
                     AttemptCount = table.Column<int>(type: "INTEGER", nullable: false),
                     LastError = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true)
                 },
@@ -60,9 +73,9 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                     Health = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     HealthReason = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     FailureReason = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    ActivatedAtUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    ClosedAtUtc = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    CreatedAtUtc = table.Column<long>(type: "INTEGER", nullable: false),
+                    ActivatedAtUtc = table.Column<long>(type: "INTEGER", nullable: true),
+                    ClosedAtUtc = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,6 +114,9 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "inbox_messages");
+
             migrationBuilder.DropTable(
                 name: "objectives");
 

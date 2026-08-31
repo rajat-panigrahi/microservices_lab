@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
 using StrategyOps.BuildingBlocks.Correlation;
+using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Time;
 using StrategyOps.Projects.Api.Infrastructure;
@@ -21,11 +22,12 @@ builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
 builder.Services.AddSingleton<IClock, SystemClock>();
 
 // ---------------------------------------------------------------------------
-// Outbox. The publisher is the logging one for now; phase 2 replaces the
-// registration below with MassTransit and nothing else in this service changes.
+// Outbox plus the bus. Note that swapping the phase 1 logging publisher for
+// RabbitMQ was a one-line change here: no handler, aggregate or test moved,
+// because they all depend on IOutboxWriter rather than on a transport.
 // ---------------------------------------------------------------------------
 builder.Services.AddOutbox<ProjectsDbContext>();
-builder.Services.AddSingleton<IIntegrationEventPublisher, LoggingIntegrationEventPublisher>();
+builder.Services.AddStrategyOpsMessaging<ProjectsDbContext>(builder.Configuration, serviceAssembly);
 
 // ---------------------------------------------------------------------------
 // Vertical slices: endpoints, handlers and validators are all found by convention,
@@ -66,6 +68,3 @@ app.MapHealthChecks("/health");
 app.MapEndpoints();
 
 app.Run();
-
-/// <summary>Exposed so the slice tests can boot this exact service with WebApplicationFactory.</summary>
-public partial class Program;

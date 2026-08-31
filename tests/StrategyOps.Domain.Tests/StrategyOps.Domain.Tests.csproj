@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Services\StrategyOps.Projects.Api\StrategyOps.Projects.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Risk.Api\StrategyOps.Risk.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Issues.Api\StrategyOps.Issues.Api.csproj" />
   </ItemGroup>
 
 </Project>

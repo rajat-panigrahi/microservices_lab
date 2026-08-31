@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using StrategyOps.BuildingBlocks.Inbox;
+using StrategyOps.BuildingBlocks.Persistence;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.Projects.Api.Domain;
 
@@ -10,13 +12,15 @@ namespace StrategyOps.Projects.Api.Infrastructure;
 /// Benefits services have to be told about a new project rather than reading it.
 /// </summary>
 public sealed class ProjectsDbContext(DbContextOptions<ProjectsDbContext> options)
-    : DbContext(options), IOutboxDbContext
+    : DbContext(options), IOutboxDbContext, IInboxDbContext
 {
     public DbSet<Project> Projects => Set<Project>();
 
     public DbSet<StrategicObjective> Objectives => Set<StrategicObjective>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+
+    public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,5 +56,9 @@ public sealed class ProjectsDbContext(DbContextOptions<ProjectsDbContext> option
         });
 
         modelBuilder.ConfigureOutbox();
+        modelBuilder.ConfigureInbox();
+
+        // Must run last: it walks every property the model already knows about.
+        modelBuilder.ApplyDateTimeOffsetConversions(Database.ProviderName);
     }
 }
