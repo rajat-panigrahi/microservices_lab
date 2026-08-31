@@ -55,3 +55,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# StrategyOps: per-service SQLite databases are runtime state, never source
+*.db
+*.db-shm
+*.db-wal
