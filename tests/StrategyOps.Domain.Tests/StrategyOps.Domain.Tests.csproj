@@ -18,6 +18,8 @@
     <ProjectReference Include="..\..\src\Services\StrategyOps.Projects.Api\StrategyOps.Projects.Api.csproj" />
     <ProjectReference Include="..\..\src\Services\StrategyOps.Risk.Api\StrategyOps.Risk.Api.csproj" />
     <ProjectReference Include="..\..\src\Services\StrategyOps.Issues.Api\StrategyOps.Issues.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Kpi.Api\StrategyOps.Kpi.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Benefits.Api\StrategyOps.Benefits.Api.csproj" />
   </ItemGroup>
 
 </Project>

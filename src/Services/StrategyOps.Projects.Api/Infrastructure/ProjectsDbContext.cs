@@ -3,6 +3,7 @@ using StrategyOps.BuildingBlocks.Inbox;
 using StrategyOps.BuildingBlocks.Persistence;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.Projects.Api.Domain;
+using StrategyOps.Projects.Api.Features.Sagas;
 
 namespace StrategyOps.Projects.Api.Infrastructure;
 
@@ -21,6 +22,13 @@ public sealed class ProjectsDbContext(DbContextOptions<ProjectsDbContext> option
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
+
+    /// <summary>
+    /// Saga state lives in this service's own database, alongside the projects it
+    /// coordinates. That is what lets a saga survive a restart and still know which legs
+    /// succeeded - an orchestrator that forgets cannot compensate.
+    /// </summary>
+    public DbSet<ProjectInitiationState> ProjectInitiations => Set<ProjectInitiationState>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +61,22 @@ public sealed class ProjectsDbContext(DbContextOptions<ProjectsDbContext> option
             entity.Property(p => p.FailureReason).HasMaxLength(1000);
 
             entity.HasIndex(p => p.ObjectiveId);
+        });
+
+        modelBuilder.Entity<ProjectInitiationState>(entity =>
+        {
+            entity.ToTable("project_initiation_sagas");
+            entity.HasKey(s => s.CorrelationId);
+            entity.Property(s => s.CurrentState).HasMaxLength(64).IsRequired();
+            entity.Property(s => s.ProjectCode).HasMaxLength(30);
+            entity.Property(s => s.FailureReason).HasMaxLength(1000);
+
+            // Optimistic concurrency: three confirmations can land at the same instant, and
+            // without this the last write would silently discard the other two flags.
+            entity.Property(s => s.Version).IsConcurrencyToken();
+
+            entity.Ignore(s => s.AllProvisioned);
+            entity.Ignore(s => s.CompensationComplete);
         });
 
         modelBuilder.ConfigureOutbox();

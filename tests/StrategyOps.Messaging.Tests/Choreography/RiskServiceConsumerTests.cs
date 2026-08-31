@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using StrategyOps.Contracts.V1.Issues;
 using StrategyOps.Contracts.V1.Projects;
+using StrategyOps.Contracts.V1.Sagas;
 using StrategyOps.Contracts.V1.Risks;
 using StrategyOps.Risk.Api.Domain;
 using StrategyOps.Risk.Api.Features.Consumers;
@@ -15,13 +16,10 @@ public class RiskServiceConsumerTests
 {
     private static readonly DateTimeOffset Now = new(2026, 1, 15, 9, 0, 0, TimeSpan.Zero);
 
-    private static ProjectInitiationRequested AnInitiation(Guid projectId) => new()
+    private static ProvisionRiskRegister AnInitiation(Guid projectId) => new()
     {
         ProjectId = projectId,
-        Code = "PRJ-0007",
-        Name = "Warehouse automation",
-        ObjectiveId = Guid.NewGuid(),
-        Budget = 250_000m,
+        ProjectCode = "PRJ-0007",
         CorrelationId = "corr-abc"
     };
 
@@ -33,7 +31,7 @@ public class RiskServiceConsumerTests
 
         var projectId = Guid.NewGuid();
         await host.PublishAsync(AnInitiation(projectId), Guid.NewGuid());
-        await host.Harness.Consumed.Any<ProjectInitiationRequested>();
+        await host.Harness.Consumed.Any<ProvisionRiskRegister>();
 
         var register = await host.QueryAsync(db => db.Registers.SingleOrDefaultAsync(r => r.ProjectId == projectId));
         register.ShouldNotBeNull();
@@ -55,7 +53,7 @@ public class RiskServiceConsumerTests
         var messageId = Guid.NewGuid();
 
         await host.PublishAsync(AnInitiation(projectId), messageId);
-        await host.Harness.Consumed.Any<ProjectInitiationRequested>();
+        await host.Harness.Consumed.Any<ProvisionRiskRegister>();
         await host.PublishAsync(AnInitiation(projectId), messageId);
 
         await Task.Delay(200);
@@ -73,7 +71,7 @@ public class RiskServiceConsumerTests
         var projectId = Guid.NewGuid();
 
         await host.PublishAsync(AnInitiation(projectId), Guid.NewGuid());
-        await host.Harness.Consumed.Any<ProjectInitiationRequested>();
+        await host.Harness.Consumed.Any<ProvisionRiskRegister>();
         await host.PublishAsync(AnInitiation(projectId), Guid.NewGuid());
 
         await Task.Delay(200);
@@ -101,7 +99,7 @@ public class RiskServiceConsumerTests
 
         var projectId = Guid.NewGuid();
         await host.PublishAsync(AnInitiation(projectId), Guid.NewGuid());
-        await host.Harness.Consumed.Any<ProjectInitiationRequested>();
+        await host.Harness.Consumed.Any<ProvisionRiskRegister>();
 
         var registerId = await host.QueryAsync(db => db.Registers
             .Where(r => r.ProjectId == projectId)
@@ -115,16 +113,10 @@ public class RiskServiceConsumerTests
         });
 
         await host.PublishAsync(
-            new ProjectInitiationFailed
-            {
-                ProjectId = projectId,
-                Code = "PRJ-0007",
-                Reason = "Benefits rejected the forecast",
-                CorrelationId = "corr-abc"
-            },
+            new WithdrawRiskRegister { ProjectId = projectId, CorrelationId = "corr-abc" },
             Guid.NewGuid());
 
-        await host.Harness.Consumed.Any<ProjectInitiationFailed>();
+        await host.Harness.Consumed.Any<WithdrawRiskRegister>();
 
         (await host.QueryAsync(db => db.Registers.CountAsync(r => r.ProjectId == projectId))).ShouldBe(0);
         (await host.QueryAsync(db => db.Risks.CountAsync(r => r.RegisterId == registerId))).ShouldBe(0);
@@ -135,24 +127,24 @@ public class RiskServiceConsumerTests
     }
 
     [Fact]
-    public async Task CompensationWithNothingToUndo_IsANoOpRatherThanAnError()
+    public async Task CompensationWithNothingToUndo_StillConfirmsBackToTheSaga()
     {
         await using var host = await ConsumerHost<RiskDbContext>.StartAsync(
             bus => bus.AddConsumer<WithdrawRiskRegisterConsumer>(), Now);
 
         await host.PublishAsync(
-            new ProjectInitiationFailed
-            {
-                ProjectId = Guid.NewGuid(),
-                Code = "PRJ-9999",
-                Reason = "failed before this service ever provisioned anything"
-            },
+            new WithdrawRiskRegister { ProjectId = Guid.NewGuid() },
             Guid.NewGuid());
 
-        (await host.Harness.Consumed.Any<ProjectInitiationFailed>()).ShouldBeTrue();
+        (await host.Harness.Consumed.Any<WithdrawRiskRegister>()).ShouldBeTrue();
 
-        var withdrawn = await host.QueryAsync(db => db.OutboxMessages.CountAsync());
-        withdrawn.ShouldBe(0, "there is nothing to announce if nothing was undone");
+        // Nothing was removed, but the saga is waiting on this leg's confirmation. A
+        // consumer that answers only when it had work to do hangs the saga in exactly the
+        // cases that are hardest to reproduce.
+        await Eventually.IsTrueAsync(
+            async () => await host.QueryAsync(db => db.OutboxMessages
+                .AnyAsync(m => m.Type == typeof(RiskRegisterWithdrawn).FullName)),
+            "the withdrawal is confirmed even though there was nothing to withdraw");
     }
 
     [Fact]

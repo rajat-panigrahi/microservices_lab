@@ -2,20 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StrategyOps.Projects.Api.Infrastructure;
+using StrategyOps.Kpi.Api.Infrastructure;
 
 #nullable disable
 
-namespace StrategyOps.Projects.Api.Infrastructure.Migrations
+namespace StrategyOps.Kpi.Api.Infrastructure.Migrations
 {
-    [DbContext(typeof(ProjectsDbContext))]
-    [Migration("20260831012508_InitialProjectsSchema")]
-    partial class InitialProjectsSchema
+    [DbContext(typeof(KpiDbContext))]
+    partial class KpiDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.19");
@@ -84,103 +81,116 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                     b.ToTable("outbox_messages", (string)null);
                 });
 
-            modelBuilder.Entity("StrategyOps.Projects.Api.Domain.Project", b =>
+            modelBuilder.Entity("StrategyOps.Kpi.Api.Domain.KpiDefinition", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("ActivatedAtUtc")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Budget")
-                        .HasPrecision(18, 2)
+                    b.Property<decimal>("AmberThreshold")
+                        .HasPrecision(18, 4)
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("ClosedAtUtc")
+                    b.Property<string>("Direction")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("LatestPeriodEndUtc")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Code")
+                    b.Property<decimal?>("LatestValue")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Rag")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ScorecardId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Target")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScorecardId");
+
+                    b.ToTable("kpis", (string)null);
+                });
+
+            modelBuilder.Entity("StrategyOps.Kpi.Api.Domain.KpiMeasurement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("KpiId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("PeriodEndUtc")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RecordedBy")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Value")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KpiId", "PeriodEndUtc");
+
+                    b.ToTable("measurements", (string)null);
+                });
+
+            modelBuilder.Entity("StrategyOps.Kpi.Api.Domain.KpiScorecard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<long>("CreatedAtUtc")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FailureReason")
-                        .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Health")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("HealthReason")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("ObjectiveId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Sponsor")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Stage")
+                    b.Property<string>("ProjectCode")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("ObjectiveId");
-
-                    b.ToTable("projects", (string)null);
-                });
-
-            modelBuilder.Entity("StrategyOps.Projects.Api.Domain.StrategicObjective", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Horizon")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("ProjectId")
                         .IsUnique();
 
-                    b.ToTable("objectives", (string)null);
+                    b.ToTable("scorecards", (string)null);
                 });
 #pragma warning restore 612, 618
         }

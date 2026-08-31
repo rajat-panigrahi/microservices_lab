@@ -179,6 +179,59 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
 
                     b.ToTable("objectives", (string)null);
                 });
+
+            modelBuilder.Entity("StrategyOps.Projects.Api.Features.Sagas.ProjectInitiationState", b =>
+                {
+                    b.Property<Guid>("CorrelationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("BenefitRegistered")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("BenefitWithdrawn")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CurrentState")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("KpiProvisioned")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("KpiWithdrawn")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProjectCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("RiskProvisioned")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RiskWithdrawn")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("StartedAtUtc")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("TimeoutTokenId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CorrelationId");
+
+                    b.ToTable("project_initiation_sagas", (string)null);
+                });
 #pragma warning restore 612, 618
         }
     }

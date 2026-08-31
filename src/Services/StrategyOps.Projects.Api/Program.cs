@@ -1,10 +1,12 @@
 using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Time;
+using StrategyOps.Projects.Api.Features.Sagas;
 using StrategyOps.Projects.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +29,18 @@ builder.Services.AddSingleton<IClock, SystemClock>();
 // because they all depend on IOutboxWriter rather than on a transport.
 // ---------------------------------------------------------------------------
 builder.Services.AddOutbox<ProjectsDbContext>();
-builder.Services.AddStrategyOpsMessaging<ProjectsDbContext>(builder.Configuration, serviceAssembly);
+builder.Services.AddStrategyOpsMessaging<ProjectsDbContext>(builder.Configuration, serviceAssembly, bus =>
+{
+    // The project initiation saga lives here, in the service that owns the aggregate whose
+    // lifecycle it coordinates. Its state is persisted in this service's database, so a
+    // restart mid-initiation resumes rather than stranding the project.
+    bus.AddSagaStateMachine<ProjectInitiationSaga, ProjectInitiationState>()
+        .EntityFrameworkRepository(repository =>
+        {
+            repository.ExistingDbContext<ProjectsDbContext>();
+            repository.ConcurrencyMode = ConcurrencyMode.Optimistic;
+        });
+});
 
 // ---------------------------------------------------------------------------
 // Vertical slices: endpoints, handlers and validators are all found by convention,

@@ -2,6 +2,7 @@ using System.Reflection;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using StrategyOps.BuildingBlocks.Inbox;
 using StrategyOps.BuildingBlocks.Outbox;
 
@@ -44,9 +45,20 @@ public static class MessagingExtensions
         services.AddScoped<IInboxStore, InboxStore>();
         services.AddScoped<IIntegrationEventPublisher, MassTransitIntegrationEventPublisher>();
 
+        // Saga timeouts need a message scheduler. RabbitMQ can do this natively only with the
+        // delayed-message-exchange plugin installed on the broker, which is not something a
+        // reader can assume they have, so this uses Quartz with an in-memory store instead.
+        // The trade-off is explicit: scheduled messages live in this process, so a restart
+        // loses pending timeouts. Point Quartz at a shared database (or install the plugin
+        // and use UseDelayedMessageScheduler) to make them durable.
+        services.AddQuartz();
+        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+
         services.AddMassTransit(bus =>
         {
             bus.AddConsumers(consumerAssembly);
+            bus.AddQuartzConsumers();
+            bus.AddPublishMessageScheduler();
             configureBus?.Invoke(bus);
 
             // Queue names come from the consumer name, kebab-cased: RiskEscalatedConsumer
@@ -71,6 +83,8 @@ public static class MessagingExtensions
                     minInterval: TimeSpan.FromMilliseconds(200),
                     maxInterval: TimeSpan.FromSeconds(10),
                     intervalDelta: TimeSpan.FromMilliseconds(500)));
+
+                cfg.UsePublishMessageScheduler();
 
                 cfg.ConfigureEndpoints(context);
             });

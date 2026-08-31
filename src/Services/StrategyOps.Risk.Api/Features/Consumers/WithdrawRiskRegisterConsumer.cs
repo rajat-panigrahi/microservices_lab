@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Inbox;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Outbox;
-using StrategyOps.Contracts.V1.Projects;
+using StrategyOps.Contracts.V1.Sagas;
 using StrategyOps.Contracts.V1.Risks;
 using StrategyOps.Risk.Api.Infrastructure;
 
@@ -24,9 +24,9 @@ public sealed class WithdrawRiskRegisterConsumer(
     IInboxStore inbox,
     IOutboxWriter outbox,
     ILogger<WithdrawRiskRegisterConsumer> logger)
-    : IdempotentConsumer<RiskDbContext, ProjectInitiationFailed>(db, inbox, logger)
+    : IdempotentConsumer<RiskDbContext, WithdrawRiskRegister>(db, inbox, logger)
 {
-    protected override async Task ConsumeOnceAsync(ConsumeContext<ProjectInitiationFailed> context)
+    protected override async Task ConsumeOnceAsync(ConsumeContext<WithdrawRiskRegister> context)
     {
         var message = context.Message;
 
@@ -35,7 +35,16 @@ public sealed class WithdrawRiskRegisterConsumer(
 
         if (register is null)
         {
-            Logger.LogInformation("Nothing to withdraw for {ProjectCode}: no register was created", message.Code);
+            // Nothing to undo - but the saga is still waiting to hear that this leg's
+            // compensation finished. Answering only when there was work to do would hang the
+            // saga in exactly the cases that are hardest to reproduce.
+            outbox.Enqueue(new RiskRegisterWithdrawn
+            {
+                ProjectId = message.ProjectId,
+                CorrelationId = message.CorrelationId
+            });
+
+            Logger.LogInformation("Nothing to withdraw for project {ProjectId}: no register was created", message.ProjectId);
             return;
         }
 
@@ -52,6 +61,6 @@ public sealed class WithdrawRiskRegisterConsumer(
             CorrelationId = message.CorrelationId
         });
 
-        Logger.LogInformation("Withdrew the risk register for {ProjectCode} after failed initiation", message.Code);
+        Logger.LogInformation("Withdrew the risk register for {ProjectCode} after failed initiation", register.ProjectCode);
     }
 }

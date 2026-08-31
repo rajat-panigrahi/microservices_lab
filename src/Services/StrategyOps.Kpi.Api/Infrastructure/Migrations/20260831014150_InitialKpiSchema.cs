@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace StrategyOps.Projects.Api.Infrastructure.Migrations
+namespace StrategyOps.Kpi.Api.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialProjectsSchema : Migration
+    public partial class InitialKpiSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,18 +25,38 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "objectives",
+                name: "kpis",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
-                    Horizon = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Owner = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false)
+                    ScorecardId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Unit = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    Direction = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    Target = table.Column<decimal>(type: "TEXT", precision: 18, scale: 4, nullable: false),
+                    AmberThreshold = table.Column<decimal>(type: "TEXT", precision: 18, scale: 4, nullable: false),
+                    LatestValue = table.Column<decimal>(type: "TEXT", precision: 18, scale: 4, nullable: true),
+                    LatestPeriodEndUtc = table.Column<long>(type: "INTEGER", nullable: true),
+                    Rag = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_objectives", x => x.Id);
+                    table.PrimaryKey("PK_kpis", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "measurements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    KpiId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PeriodEndUtc = table.Column<long>(type: "INTEGER", nullable: false),
+                    Value = table.Column<decimal>(type: "TEXT", precision: 18, scale: 4, nullable: false),
+                    RecordedBy = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_measurements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,33 +80,30 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "projects",
+                name: "scorecards",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    ProjectId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ProjectCode = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     ObjectiveId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Sponsor = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false),
-                    Budget = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
-                    Stage = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Health = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    HealthReason = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    FailureReason = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedAtUtc = table.Column<long>(type: "INTEGER", nullable: false),
-                    ActivatedAtUtc = table.Column<long>(type: "INTEGER", nullable: true),
-                    ClosedAtUtc = table.Column<long>(type: "INTEGER", nullable: true)
+                    Status = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    CreatedAtUtc = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_projects", x => x.Id);
+                    table.PrimaryKey("PK_scorecards", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_objectives_Code",
-                table: "objectives",
-                column: "Code",
-                unique: true);
+                name: "IX_kpis_ScorecardId",
+                table: "kpis",
+                column: "ScorecardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_measurements_KpiId_PeriodEndUtc",
+                table: "measurements",
+                columns: new[] { "KpiId", "PeriodEndUtc" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_outbox_messages_Id",
@@ -100,15 +117,10 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                 columns: new[] { "ProcessedAtUtc", "Sequence" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_projects_Code",
-                table: "projects",
-                column: "Code",
+                name: "IX_scorecards_ProjectId",
+                table: "scorecards",
+                column: "ProjectId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_projects_ObjectiveId",
-                table: "projects",
-                column: "ObjectiveId");
         }
 
         /// <inheritdoc />
@@ -118,13 +130,16 @@ namespace StrategyOps.Projects.Api.Infrastructure.Migrations
                 name: "inbox_messages");
 
             migrationBuilder.DropTable(
-                name: "objectives");
+                name: "kpis");
+
+            migrationBuilder.DropTable(
+                name: "measurements");
 
             migrationBuilder.DropTable(
                 name: "outbox_messages");
 
             migrationBuilder.DropTable(
-                name: "projects");
+                name: "scorecards");
         }
     }
 }
