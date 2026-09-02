@@ -2,6 +2,8 @@ using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Chaos;
+using StrategyOps.BuildingBlocks.Hosting;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Outbox;
@@ -19,9 +21,8 @@ builder.Services.AddDbContext<ProjectsDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Projects")
                       ?? "Data Source=strategyops-projects.db"));
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
-builder.Services.AddSingleton<IClock, SystemClock>();
+// Auth, service discovery, correlation, health, problem details - see ServiceDefaults.
+builder.AddStrategyOpsPlatform("projects-api");
 
 // ---------------------------------------------------------------------------
 // Outbox plus the bus. Note that swapping the phase 1 logging publisher for
@@ -50,21 +51,14 @@ builder.Services.AddEndpoints(serviceAssembly);
 builder.Services.AddSliceHandlers(serviceAssembly);
 builder.Services.AddValidatorsFromAssembly(serviceAssembly, includeInternalTypes: true);
 
-builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
-builder.Services.AddHealthChecks();
+builder.Services.AddChaos();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new()
-{
-    Title = "StrategyOps - Projects",
-    Version = "v1",
-    Description = "Owns strategic objectives and the project lifecycle. Publishes the events the rest of the portfolio reacts to."
-}));
+builder.Services.AddStrategyOpsSwagger(
+    "StrategyOps - Projects",
+    "Owns strategic objectives and the project lifecycle. Publishes the events the rest of the portfolio reacts to.");
 
 var app = builder.Build();
-
-app.UseExceptionHandler();
 
 if (!app.Environment.IsEnvironment("Testing"))
 {
@@ -74,10 +68,8 @@ if (!app.Environment.IsEnvironment("Testing"))
     }
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projects v1"));
-
-app.MapHealthChecks("/health");
+app.UseChaos();
+app.UseStrategyOpsPlatform("Projects v1");
 app.MapEndpoints();
 
 app.Run();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Contracts.V1.Risks;
@@ -58,6 +59,7 @@ public sealed class CloseRiskEndpoint : IEndpoint
             .WithName("CloseRisk")
             .WithSummary("Retire a risk with a resolution note")
             .WithTags("Risks")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<CloseRiskCommand>()
             .Produces<CloseRiskResponse>();
 }

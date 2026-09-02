@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Projects.Api.Domain;
 using StrategyOps.Projects.Api.Infrastructure;
@@ -58,5 +59,6 @@ public sealed class ListProjectsEndpoint : IEndpoint
             .WithName("ListProjects")
             .WithSummary("List projects, optionally filtered by stage")
             .WithTags("Projects")
+            .RequireAuthorization(Policies.Read)
             .Produces<ProjectPage>();
 }

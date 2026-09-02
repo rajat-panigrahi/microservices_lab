@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Issues.Api.Infrastructure;
 
@@ -38,6 +39,7 @@ public sealed class StartIssueEndpoint : IEndpoint
             .WithName("StartIssue")
             .WithSummary("Begin work on an assigned issue")
             .WithTags("Issues")
+            .RequireAuthorization(Policies.ManageRisk)
             .Produces<StartIssueResponse>()
             .ProducesProblem(StatusCodes.Status409Conflict);
 }

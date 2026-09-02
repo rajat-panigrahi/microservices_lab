@@ -27,20 +27,29 @@ namespace StrategyOps.Slice.Tests;
 /// </remarks>
 public sealed class ProjectsApiFactory : WebApplicationFactory<ProjectsApiEntryPoint>, IAsyncLifetime
 {
-    private readonly SqliteConnection _connection = new("Data Source=:memory:");
+    // A file, not ":memory:". A shared in-memory SQLite connection is reused by every scope,
+    // so anything that opens an explicit transaction - MassTransit's saga repository, for one
+    // - ends up nesting transactions on a single connection, which SQLite forbids. A file
+    // gives each scope its own pooled connection, exactly as the deployed service gets.
+    private readonly string _databasePath =
+        Path.Combine(Path.GetTempPath(), $"strategyops-projects-tests-{Guid.NewGuid():n}.db");
 
     public async Task InitializeAsync()
     {
-        await _connection.OpenAsync();
-
         using var scope = Services.CreateScope();
         await scope.ServiceProvider.GetRequiredService<ProjectsDbContext>().Database.MigrateAsync();
     }
 
     public new async Task DisposeAsync()
     {
-        await _connection.DisposeAsync();
         await base.DisposeAsync();
+
+        SqliteConnection.ClearAllPools();
+
+        if (File.Exists(_databasePath))
+        {
+            File.Delete(_databasePath);
+        }
     }
 
     /// <summary>Runs one outbox pass, the way the background publisher would.</summary>
@@ -61,11 +70,19 @@ public sealed class ProjectsApiFactory : WebApplicationFactory<ProjectsApiEntryP
     {
         builder.UseEnvironment("Testing");
 
+        // Real authentication runs; only the signing key is pinned so tests can mint valid
+        // tokens. Discovery self-registration is off because there is no registry here.
+        builder.UseSetting("Jwt:SigningKey", TestTokens.SigningKey);
+        builder.UseSetting("Jwt:Issuer", TestTokens.Issuer);
+        builder.UseSetting("Jwt:Audience", TestTokens.Audience);
+        builder.UseSetting("Discovery:Enabled", "false");
+        builder.UseSetting("RabbitMq:UseInMemoryTransport", "true");
+
         builder.ConfigureServices(services =>
         {
             services.RemoveAll<DbContextOptions<ProjectsDbContext>>();
             services.RemoveAll<DbContextOptions>();
-            services.AddDbContext<ProjectsDbContext>(options => options.UseSqlite(_connection));
+            services.AddDbContext<ProjectsDbContext>(options => options.UseSqlite($"Data Source={_databasePath}"));
 
             var publisher = services.SingleOrDefault(d =>
                 d.ServiceType == typeof(IHostedService)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Risk.Api.Domain;
 using StrategyOps.Risk.Api.Infrastructure;
@@ -81,6 +82,7 @@ public sealed class GetRiskRegisterEndpoint : IEndpoint
             .WithName("GetRiskRegister")
             .WithSummary("The full risk register for a project, worst first")
             .WithTags("Risks")
+            .RequireAuthorization(Policies.Read)
             .Produces<RiskRegisterView>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 }

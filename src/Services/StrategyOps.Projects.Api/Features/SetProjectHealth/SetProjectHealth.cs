@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Contracts.V1.Projects;
@@ -79,6 +80,7 @@ public sealed class SetProjectHealthEndpoint : IEndpoint
             .WithName("SetProjectHealth")
             .WithSummary("Move a project's RAG status")
             .WithTags("Projects")
+            .RequireAuthorization(Policies.ManageDelivery)
             .WithValidation<SetProjectHealthCommand>()
             .Produces<SetProjectHealthResponse>();
 }

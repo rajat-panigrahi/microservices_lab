@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Risk.Api.Infrastructure;
 
@@ -51,6 +52,7 @@ public sealed class PlanMitigationEndpoint : IEndpoint
             .WithName("PlanRiskMitigation")
             .WithSummary("Record the agreed mitigation plan for a risk")
             .WithTags("Risks")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<PlanMitigationCommand>()
             .Produces<PlanMitigationResponse>();
 }

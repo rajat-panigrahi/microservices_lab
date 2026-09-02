@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.Benefits.Api.Infrastructure;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 
 namespace StrategyOps.Benefits.Api.Features.GetBenefitProfile;
@@ -66,6 +67,7 @@ public sealed class GetBenefitProfileEndpoint : IEndpoint
             .WithName("GetBenefitProfile")
             .WithSummary("A project's benefit forecast and what has actually been realised")
             .WithTags("Benefits")
+            .RequireAuthorization(Policies.Read)
             .Produces<BenefitProfileView>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 }

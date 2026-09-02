@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Shouldly;
+using StrategyOps.BuildingBlocks.Auth;
 
 namespace StrategyOps.Slice.Tests.Issues;
 
@@ -13,7 +14,7 @@ namespace StrategyOps.Slice.Tests.Issues;
 [Collection(nameof(IssuesApiCollection))]
 public class IssueQueryTests(IssuesApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateClient().WithRole(Roles.ProjectManager);
 
     private async Task<Guid> AnIssueAsync(Guid projectId, string title, string severity)
     {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Projects.Api.Domain;
 using StrategyOps.Projects.Api.Infrastructure;
@@ -59,6 +60,7 @@ public sealed class CreateObjectiveEndpoint : IEndpoint
             .WithName("CreateObjective")
             .WithSummary("Register a strategic objective for projects to deliver against")
             .WithTags("Objectives")
+            .RequireAuthorization(Policies.ManageDelivery)
             .WithValidation<CreateObjectiveCommand>()
             .Produces<CreateObjectiveResponse>(StatusCodes.Status201Created);
 }

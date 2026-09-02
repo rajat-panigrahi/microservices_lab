@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Issues.Api.Domain;
 using StrategyOps.Issues.Api.Infrastructure;
@@ -67,5 +68,6 @@ public sealed class ListIssuesEndpoint : IEndpoint
             .WithName("ListIssues")
             .WithSummary("List issues, most urgent deadline first")
             .WithTags("Issues")
+            .RequireAuthorization(Policies.Read)
             .Produces<IReadOnlyList<IssueSummary>>();
 }

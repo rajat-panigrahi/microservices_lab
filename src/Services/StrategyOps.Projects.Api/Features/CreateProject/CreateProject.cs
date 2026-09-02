@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
@@ -91,6 +92,7 @@ public sealed class CreateProjectEndpoint : IEndpoint
             .WithName("CreateProject")
             .WithSummary("Draft a new project against a strategic objective")
             .WithTags("Projects")
+            .RequireAuthorization(Policies.ManageDelivery)
             .WithValidation<CreateProjectCommand>()
             .Produces<CreateProjectResponse>(StatusCodes.Status201Created);
 }

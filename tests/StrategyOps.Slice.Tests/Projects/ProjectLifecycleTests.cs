@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.Contracts.V1.Projects;
 using StrategyOps.BuildingBlocks.Outbox;
 
@@ -10,7 +11,9 @@ namespace StrategyOps.Slice.Tests.Projects;
 [Collection(nameof(ProjectsApiCollection))]
 public class ProjectLifecycleTests(ProjectsApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    // The portfolio director can do everything these tests exercise. Role-specific behaviour
+    // is asserted separately in AuthorizationTests.
+    private readonly HttpClient _client = factory.CreateClient().WithRole(Roles.PortfolioDirector);
 
     private async Task<Guid> AnObjectiveAsync(string code)
     {

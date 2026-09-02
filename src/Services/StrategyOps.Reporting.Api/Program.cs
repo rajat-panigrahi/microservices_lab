@@ -1,6 +1,8 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Chaos;
+using StrategyOps.BuildingBlocks.Hosting;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Time;
@@ -14,9 +16,8 @@ var serviceAssembly = typeof(Program).Assembly;
 builder.Services.AddDbContext<ReportingDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Reporting") ?? "Data Source=strategyops-reporting.db"));
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
-builder.Services.AddSingleton<IClock, SystemClock>();
+// Auth, service discovery, correlation, health, problem details - see ServiceDefaults.
+builder.AddStrategyOpsPlatform("reporting-api");
 
 // No outbox here: this service consumes events and publishes none. A read model that starts
 // emitting its own events has usually stopped being a read model.
@@ -32,21 +33,14 @@ builder.Services.AddEndpoints(serviceAssembly);
 builder.Services.AddSliceHandlers(serviceAssembly);
 builder.Services.AddValidatorsFromAssembly(serviceAssembly, includeInternalTypes: true);
 
-builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
-builder.Services.AddHealthChecks();
+builder.Services.AddChaos();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new()
-{
-    Title = "StrategyOps - Reporting",
-    Version = "v1",
-    Description = "The CQRS read side: one denormalised row per project, built from the events the other five services publish. Owns no truth, and can be rebuilt at any time."
-}));
+builder.Services.AddStrategyOpsSwagger(
+    "StrategyOps - Reporting",
+    "The CQRS read side: one denormalised row per project, built from the events the other five services publish. Owns no truth, and can be rebuilt at any time.");
 
 var app = builder.Build();
-
-app.UseExceptionHandler();
 
 if (!app.Environment.IsEnvironment("Testing"))
 {
@@ -59,10 +53,8 @@ if (!app.Environment.IsEnvironment("Testing"))
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.UseSwagger();
-app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Reporting v1"));
-
-app.MapHealthChecks("/health");
+app.UseChaos();
+app.UseStrategyOpsPlatform("Reporting v1");
 app.MapHub<PortfolioHub>(PortfolioHub.Path);
 app.MapEndpoints();
 

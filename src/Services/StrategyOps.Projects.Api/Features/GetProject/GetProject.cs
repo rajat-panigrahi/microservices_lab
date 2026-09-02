@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Projects.Api.Infrastructure;
 
@@ -73,6 +74,7 @@ public sealed class GetProjectEndpoint : IEndpoint
             .WithName("GetProject")
             .WithSummary("Fetch one project")
             .WithTags("Projects")
+            .RequireAuthorization(Policies.Read)
             .Produces<ProjectDetail>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 }

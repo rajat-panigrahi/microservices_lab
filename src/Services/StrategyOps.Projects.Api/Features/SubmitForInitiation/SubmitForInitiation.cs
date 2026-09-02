@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
@@ -61,6 +62,7 @@ public sealed class SubmitForInitiationEndpoint : IEndpoint
             .WithName("SubmitProjectForInitiation")
             .WithSummary("Kick off the initiation saga across KPI, Risk and Benefits")
             .WithTags("Projects")
+            .RequireAuthorization(Policies.ManagePortfolio)
             .Produces<SubmitForInitiationResponse>()
             .ProducesProblem(StatusCodes.Status409Conflict);
 }

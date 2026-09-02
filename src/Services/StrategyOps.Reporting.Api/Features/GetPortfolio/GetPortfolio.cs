@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Reporting.Api.Infrastructure;
 
@@ -94,6 +95,7 @@ public sealed class GetPortfolioEndpoint : IEndpoint
             .WithName("GetPortfolio")
             .WithSummary("Every project with its KPIs, risks, issues and benefits, from one table")
             .WithTags("Reporting")
+            .RequireAuthorization(Policies.Read)
             .Produces<PortfolioSummary>();
 
         app.MapGet("/reporting/portfolio/{projectId:guid}", async (
@@ -109,6 +111,7 @@ public sealed class GetPortfolioEndpoint : IEndpoint
             })
             .WithName("GetPortfolioProject")
             .WithSummary("One project's denormalised row")
-            .WithTags("Reporting");
+            .WithTags("Reporting")
+            .RequireAuthorization(Policies.Read);
     }
 }

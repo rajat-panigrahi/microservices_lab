@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Kpi.Api.Domain;
 using StrategyOps.Kpi.Api.Infrastructure;
@@ -79,6 +80,7 @@ public sealed class GetScorecardEndpoint : IEndpoint
             .WithName("GetScorecard")
             .WithSummary("A project's KPI scorecard with RAG counts")
             .WithTags("KPIs")
+            .RequireAuthorization(Policies.Read)
             .Produces<ScorecardView>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 }

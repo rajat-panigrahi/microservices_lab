@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
 using StrategyOps.Reporting.Api.Domain;
@@ -170,5 +171,6 @@ public sealed class RebuildReadModelEndpoint : IEndpoint
             .WithName("RebuildReadModel")
             .WithSummary("Rebuild the whole read model from the source services")
             .WithTags("Reporting")
+            .RequireAuthorization(Policies.ManagePortfolio)
             .Produces<RebuildResult>();
 }

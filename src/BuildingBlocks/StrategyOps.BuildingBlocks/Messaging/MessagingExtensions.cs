@@ -21,6 +21,20 @@ public sealed class RabbitMqOptions
     public string Username { get; set; } = "guest";
 
     public string Password { get; set; } = "guest";
+
+    /// <summary>
+    /// Runs the bus on MassTransit's in-memory transport instead of RabbitMQ.
+    /// </summary>
+    /// <remarks>
+    /// Used by the slice tests, which are about one service's HTTP surface and persistence
+    /// and have no business needing a broker running to pass. Consumers, the outbox publisher
+    /// and the inbox all still work - only the hop between processes disappears, and a slice
+    /// test never makes that hop anyway.
+    ///
+    /// This is not a way to run the system: in-memory means in THIS process, so nothing
+    /// actually reaches another service.
+    /// </remarks>
+    public bool UseInMemoryTransport { get; set; }
 }
 
 public static class MessagingExtensions
@@ -65,6 +79,23 @@ public static class MessagingExtensions
             // becomes "risk-escalated". Readable in the RabbitMQ management UI, which matters
             // the first time you have to debug why a message is sitting somewhere.
             bus.SetKebabCaseEndpointNameFormatter();
+
+            if (options.UseInMemoryTransport)
+            {
+                bus.UsingInMemory((context, cfg) =>
+                {
+                    cfg.UseMessageRetry(retry => retry.Immediate(2));
+
+                    // The saga schedules a timeout, and a state machine without a scheduler
+                    // faults with PayloadNotFoundException the moment it tries. Easy to miss
+                    // because it only shows up on the transport the tests use.
+                    cfg.UsePublishMessageScheduler();
+
+                    cfg.ConfigureEndpoints(context);
+                });
+
+                return;
+            }
 
             bus.UsingRabbitMq((context, cfg) =>
             {

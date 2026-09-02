@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
 using StrategyOps.Issues.Api.Infrastructure;
@@ -60,6 +61,7 @@ public sealed class GetIssueEndpoint : IEndpoint
             .WithName("GetIssue")
             .WithSummary("Fetch one issue, including whether it has breached its SLA")
             .WithTags("Issues")
+            .RequireAuthorization(Policies.Read)
             .Produces<IssueDetail>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 }

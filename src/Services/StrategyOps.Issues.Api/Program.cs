@@ -1,6 +1,8 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Chaos;
+using StrategyOps.BuildingBlocks.Hosting;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Outbox;
@@ -13,9 +15,8 @@ var serviceAssembly = typeof(Program).Assembly;
 builder.Services.AddDbContext<IssuesDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Issues") ?? "Data Source=strategyops-issues.db"));
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
-builder.Services.AddSingleton<IClock, SystemClock>();
+// Auth, service discovery, correlation, health, problem details - see ServiceDefaults.
+builder.AddStrategyOpsPlatform("issues-api");
 
 builder.Services.AddOutbox<IssuesDbContext>();
 builder.Services.AddStrategyOpsMessaging<IssuesDbContext>(builder.Configuration, serviceAssembly);
@@ -24,21 +25,14 @@ builder.Services.AddEndpoints(serviceAssembly);
 builder.Services.AddSliceHandlers(serviceAssembly);
 builder.Services.AddValidatorsFromAssembly(serviceAssembly, includeInternalTypes: true);
 
-builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
-builder.Services.AddHealthChecks();
+builder.Services.AddChaos();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new()
-{
-    Title = "StrategyOps - Issues",
-    Version = "v1",
-    Description = "Owns issues and their SLAs. Issues appear here on their own when a risk materialises - nobody calls this service to create them."
-}));
+builder.Services.AddStrategyOpsSwagger(
+    "StrategyOps - Issues",
+    "Owns issues and their SLAs. Issues appear here on their own when a risk materialises - nobody calls this service to create them.");
 
 var app = builder.Build();
-
-app.UseExceptionHandler();
 
 if (!app.Environment.IsEnvironment("Testing"))
 {
@@ -48,10 +42,8 @@ if (!app.Environment.IsEnvironment("Testing"))
     }
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Issues v1"));
-
-app.MapHealthChecks("/health");
+app.UseChaos();
+app.UseStrategyOpsPlatform("Issues v1");
 app.MapEndpoints();
 
 app.Run();

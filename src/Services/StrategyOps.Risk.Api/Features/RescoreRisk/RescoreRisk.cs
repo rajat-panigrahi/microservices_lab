@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Contracts.V1.Risks;
@@ -69,6 +70,7 @@ public sealed class RescoreRiskEndpoint : IEndpoint
             .WithName("RescoreRisk")
             .WithSummary("Re-score a risk on the probability/impact matrix")
             .WithTags("Risks")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<RescoreRiskCommand>()
             .Produces<RescoreRiskResponse>();
 }

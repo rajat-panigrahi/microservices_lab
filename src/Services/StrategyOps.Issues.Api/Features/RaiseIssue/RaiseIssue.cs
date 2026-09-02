@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
@@ -69,6 +70,7 @@ public sealed class RaiseIssueEndpoint : IEndpoint
             .WithName("RaiseIssue")
             .WithSummary("Raise an issue directly, without an originating risk")
             .WithTags("Issues")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<RaiseIssueCommand>()
             .Produces<RaiseIssueResponse>(StatusCodes.Status201Created);
 }

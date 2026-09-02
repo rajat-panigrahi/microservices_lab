@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using StrategyOps.Benefits.Api.Domain;
 using StrategyOps.Benefits.Api.Infrastructure;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Contracts.V1.Benefits;
@@ -69,6 +70,7 @@ public sealed class RecordRealisationEndpoint : IEndpoint
             .WithName("RecordBenefitRealisation")
             .WithSummary("Record value actually delivered against the forecast")
             .WithTags("Benefits")
+            .RequireAuthorization(Policies.ManageDelivery)
             .WithValidation<RecordRealisationCommand>()
             .Produces<RecordRealisationResponse>()
             .ProducesProblem(StatusCodes.Status409Conflict);

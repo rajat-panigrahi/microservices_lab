@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
@@ -90,6 +91,7 @@ public sealed class RaiseRiskEndpoint : IEndpoint
             .WithName("RaiseRisk")
             .WithSummary("Add a scored risk to a project's register")
             .WithTags("Risks")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<RaiseRiskCommand>()
             .Produces<RaiseRiskResponse>(StatusCodes.Status201Created);
 }

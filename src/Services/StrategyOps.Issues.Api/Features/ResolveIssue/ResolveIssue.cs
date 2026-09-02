@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.BuildingBlocks.Time;
@@ -62,6 +63,7 @@ public sealed class ResolveIssueEndpoint : IEndpoint
             .WithName("ResolveIssue")
             .WithSummary("Resolve an issue; closes the originating risk if there was one")
             .WithTags("Issues")
+            .RequireAuthorization(Policies.ManageRisk)
             .WithValidation<ResolveIssueCommand>()
             .Produces<ResolveIssueResponse>()
             .ProducesProblem(StatusCodes.Status409Conflict);

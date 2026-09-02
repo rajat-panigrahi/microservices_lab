@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Outbox;
 using StrategyOps.BuildingBlocks.Results;
 using StrategyOps.Contracts.V1.Kpis;
@@ -111,6 +112,7 @@ public sealed class RecordMeasurementEndpoint : IEndpoint
             .WithName("RecordKpiMeasurement")
             .WithSummary("Record a period reading; publishes a breach only when RAG actually moves")
             .WithTags("KPIs")
+            .RequireAuthorization(Policies.ManageDelivery)
             .WithValidation<RecordMeasurementCommand>()
             .Produces<RecordMeasurementResponse>()
             .ProducesProblem(StatusCodes.Status409Conflict);
