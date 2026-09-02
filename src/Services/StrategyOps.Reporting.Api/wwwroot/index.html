@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StrategyOps — Portfolio Dashboard</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #1c2024; --muted: #667085;
+    --line: #e4e7ec; --green: #12805c; --amber: #b54708; --red: #b42318; --grey: #667085;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --panel: #1c1f24; --ink: #e8eaed; --muted: #9aa3af; --line: #2a2f36;
+            --green: #3ec489; --amber: #f0a44a; --red: #f27a72; --grey: #9aa3af; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { padding: 24px 28px 12px; }
+  h1 { margin: 0 0 4px; font-size: 20px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .status { display: inline-flex; align-items: center; gap: 6px; margin-left: 12px; font-size: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grey); }
+  .dot.live { background: var(--green); }
+  .dot.down { background: var(--red); }
+  .tiles { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 28px 16px; }
+  .tile { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+          padding: 12px 16px; min-width: 120px; }
+  .tile .n { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .tile .l { color: var(--muted); font-size: 12px; }
+  .wrap { padding: 0 28px 40px; }
+  .scroll { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 940px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 600; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px;
+          font-weight: 600; border: 1px solid currentColor; }
+  .Green { color: var(--green); } .Amber { color: var(--amber); }
+  .Red { color: var(--red); } .Closed, .Failed { color: var(--grey); }
+  .flash { animation: flash 1.4s ease-out; }
+  @keyframes flash { from { background: color-mix(in srgb, var(--amber) 22%, transparent); } to { background: transparent; } }
+  .empty { padding: 32px; text-align: center; color: var(--muted); }
+  code { background: color-mix(in srgb, var(--muted) 14%, transparent); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Portfolio dashboard</h1>
+  <div class="sub">
+    One row per project, assembled from five services that never share a database.
+    <span class="status"><span class="dot" id="dot"></span><span id="conn">connecting…</span></span>
+  </div>
+</header>
+
+<div class="tiles">
+  <div class="tile"><div class="n" id="t-total">0</div><div class="l">Projects</div></div>
+  <div class="tile"><div class="n Green" id="t-green">0</div><div class="l">Green</div></div>
+  <div class="tile"><div class="n Amber" id="t-amber">0</div><div class="l">Amber</div></div>
+  <div class="tile"><div class="n Red" id="t-red">0</div><div class="l">Red</div></div>
+  <div class="tile"><div class="n" id="t-forecast">—</div><div class="l">Benefit forecast</div></div>
+  <div class="tile"><div class="n" id="t-realised">—</div><div class="l">Realised</div></div>
+</div>
+
+<div class="wrap">
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th><th>Project</th><th>Stage</th><th>Status</th>
+          <th class="num">KPI G/A/R</th>
+          <th class="num">Risks</th><th class="num">Critical</th>
+          <th class="num">Issues</th><th class="num">Critical</th>
+          <th class="num">Forecast</th><th class="num">Realised</th><th>Benefit</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty">
+      No projects yet. Create one with <code>POST /projects</code> on the Projects service, then
+      submit it for initiation and watch this table fill in without a refresh.
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+<script>
+  const rowsEl = document.getElementById('rows');
+  const emptyEl = document.getElementById('empty');
+  const state = new Map();
+
+  const money = n => n === 0 ? '—' : new Intl.NumberFormat(undefined, {
+    notation: 'compact', maximumFractionDigits: 1
+  }).format(n);
+
+  const ago = iso => {
+    const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
+    if (s < 60) return `${Math.floor(s)}s ago`;
+    if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+    return `${Math.floor(s / 3600)}h ago`;
+  };
+
+  function render(flashId) {
+    const items = [...state.values()].sort((a, b) => a.projectCode.localeCompare(b.projectCode));
+    emptyEl.style.display = items.length ? 'none' : 'block';
+
+    document.getElementById('t-total').textContent = items.length;
+    for (const s of ['green', 'amber', 'red']) {
+      document.getElementById('t-' + s).textContent =
+        items.filter(i => (i.overallStatus || '').toLowerCase() === s).length;
+    }
+    document.getElementById('t-forecast').textContent = money(items.reduce((a, i) => a + (i.benefitForecast || 0), 0));
+    document.getElementById('t-realised').textContent = money(items.reduce((a, i) => a + (i.benefitRealised || 0), 0));
+
+    rowsEl.innerHTML = items.map(i => `
+      <tr class="${i.projectId === flashId ? 'flash' : ''}">
+        <td><strong>${i.projectCode || '—'}</strong></td>
+        <td>${i.projectName || '—'}</td>
+        <td>${i.stage}</td>
+        <td><span class="pill ${i.overallStatus}">${i.overallStatus}</span></td>
+        <td class="num"><span class="Green">${i.kpiGreen}</span>/<span class="Amber">${i.kpiAmber}</span>/<span class="Red">${i.kpiRed}</span></td>
+        <td class="num">${i.openRisks}</td>
+        <td class="num ${i.criticalOpenRisks ? 'Red' : ''}">${i.criticalOpenRisks}</td>
+        <td class="num">${i.openIssues}</td>
+        <td class="num ${i.criticalOpenIssues ? 'Red' : ''}">${i.criticalOpenIssues}</td>
+        <td class="num">${money(i.benefitForecast)}</td>
+        <td class="num">${money(i.benefitRealised)}</td>
+        <td class="${i.benefitStatus === 'AtRisk' ? 'Red' : ''}">${i.benefitStatus}</td>
+        <td title="${i.lastUpdatedUtc}">${ago(i.lastUpdatedUtc)}</td>
+      </tr>`).join('');
+  }
+
+  async function loadSnapshot() {
+    try {
+      const res = await fetch('/reporting/portfolio');
+      const data = await res.json();
+      state.clear();
+      for (const p of data.projects) state.set(p.projectId, p);
+      render();
+    } catch (e) {
+      console.error('snapshot failed', e);
+    }
+  }
+
+  function setConnection(cls, text) {
+    document.getElementById('dot').className = 'dot ' + cls;
+    document.getElementById('conn').textContent = text;
+  }
+
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl('/hubs/portfolio')
+    .withAutomaticReconnect()
+    .build();
+
+  // Every push is one projection committing. The gap between an action in another service
+  // and this row changing IS the eventual-consistency window - usually a second or two.
+  connection.on('scorecardUpdated', s => { state.set(s.projectId, s); render(s.projectId); });
+  connection.onreconnecting(() => setConnection('down', 'reconnecting…'));
+  connection.onreconnected(() => { setConnection('live', 'live'); loadSnapshot(); });
+  connection.onclose(() => setConnection('down', 'disconnected'));
+
+  loadSnapshot().then(() =>
+    connection.start()
+      .then(() => setConnection('live', 'live'))
+      .catch(() => setConnection('down', 'offline — showing a snapshot')));
+
+  // Keeps the "updated Ns ago" column honest without re-fetching anything.
+  setInterval(() => render(), 5000);
+</script>
+</body>
+</html>

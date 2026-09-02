@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyOps.Kpi.Api", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyOps.Benefits.Api", "src\Services\StrategyOps.Benefits.Api\StrategyOps.Benefits.Api.csproj", "{015404BA-9000-4C47-A48B-E3933E34CA7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyOps.Reporting.Api", "src\Services\StrategyOps.Reporting.Api\StrategyOps.Reporting.Api.csproj", "{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{015404BA-9000-4C47-A48B-E3933E34CA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{015404BA-9000-4C47-A48B-E3933E34CA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{015404BA-9000-4C47-A48B-E3933E34CA7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{58500CE1-21AA-4881-A295-A539CD91D11B} = {C8DEA99B-2D9C-4EBE-A815-C339A1864069}
@@ -94,5 +100,6 @@ Global
 		{12235FF9-A65E-4781-863D-81732CB4DFDA} = {6CBA324E-2ECE-47C2-9D49-2E5A4AE0D6DD}
 		{0A5D93E5-1032-4F6D-ADA4-4A8242D743ED} = {AD758562-0143-46B9-A50E-00D9283B09F0}
 		{015404BA-9000-4C47-A48B-E3933E34CA7F} = {AD758562-0143-46B9-A50E-00D9283B09F0}
+		{9CAAA735-A5C1-4F0C-958D-C1DE643C83EE} = {AD758562-0143-46B9-A50E-00D9283B09F0}
 	EndGlobalSection
 EndGlobal
