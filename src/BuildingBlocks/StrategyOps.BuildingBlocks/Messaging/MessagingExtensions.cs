@@ -90,6 +90,8 @@ public static class MessagingExtensions
                     // faults with PayloadNotFoundException the moment it tries. Easy to miss
                     // because it only shows up on the transport the tests use.
                     cfg.UsePublishMessageScheduler();
+                    cfg.UseSendFilter(typeof(CorrelationSendFilter<>), context);
+                    cfg.UseConsumeFilter(typeof(CorrelationConsumeFilter<>), context);
 
                     cfg.ConfigureEndpoints(context);
                 });
@@ -116,6 +118,11 @@ public static class MessagingExtensions
                     intervalDelta: TimeSpan.FromMilliseconds(500)));
 
                 cfg.UsePublishMessageScheduler();
+
+                // Carries the correlation id across the broker in both directions - the hop
+                // where most correlation chains quietly end.
+                cfg.UseSendFilter(typeof(CorrelationSendFilter<>), context);
+                cfg.UseConsumeFilter(typeof(CorrelationConsumeFilter<>), context);
 
                 cfg.ConfigureEndpoints(context);
             });

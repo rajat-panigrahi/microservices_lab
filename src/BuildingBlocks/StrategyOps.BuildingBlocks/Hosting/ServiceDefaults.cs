@@ -4,9 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Discovery;
+using StrategyOps.BuildingBlocks.Observability;
 using StrategyOps.BuildingBlocks.Time;
 
 namespace StrategyOps.BuildingBlocks.Hosting;
@@ -29,6 +32,9 @@ public static class ServiceDefaults
     /// <param name="serviceName">The logical name used in the service registry, e.g. "projects-api".</param>
     public static WebApplicationBuilder AddStrategyOpsPlatform(this WebApplicationBuilder builder, string serviceName)
     {
+        // Structured logs, traces and metrics, all tagged with this service's name.
+        builder.AddStrategyOpsObservability(serviceName);
+
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IClock, SystemClock>();
         builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
@@ -44,6 +50,7 @@ public static class ServiceDefaults
             options.ServiceName = string.IsNullOrWhiteSpace(options.ServiceName) ? serviceName : options.ServiceName;
         });
 
+        builder.Services.AddTransient<CorrelationHttpMessageHandler>();
         builder.Services.AddHttpClient<IServiceRegistryClient, ServiceRegistryClient>();
         builder.Services.AddHostedService<ServiceRegistrationService>();
 
@@ -89,6 +96,20 @@ public static class ServiceDefaults
     {
         app.UseExceptionHandler();
 
+        // First in the pipeline after error handling, so every log line written by anything
+        // downstream - including the error handler - carries the correlation id.
+        app.UseCorrelationId();
+
+        // One line per request with method, path, status and elapsed ms, instead of the
+        // several the framework emits by default.
+        app.UseSerilogRequestLogging(logging =>
+            logging.GetLevel = (context, _, exception) =>
+                exception is not null || context.Response.StatusCode >= 500
+                    ? Serilog.Events.LogEventLevel.Error
+                    : context.Request.Path.StartsWithSegments("/health")
+                        ? Serilog.Events.LogEventLevel.Verbose
+                        : Serilog.Events.LogEventLevel.Information);
+
         app.UseSwagger();
         app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", swaggerTitle));
 
@@ -97,8 +118,14 @@ public static class ServiceDefaults
 
         // Health must stay open: a probe cannot present a token, and a readiness check that
         // returns 401 makes an orchestrator kill a perfectly healthy pod.
-        app.MapHealthChecks("/health").AllowAnonymous();
-        app.MapHealthChecks("/health/ready").AllowAnonymous();
+        //
+        // Liveness and readiness answer different questions, and conflating them is a
+        // classic Kubernetes mistake. Liveness is "is this process wedged?" - if it fails,
+        // the pod is KILLED, so it must not depend on anything external, or a database blip
+        // restarts every replica you have. Readiness is "can I serve traffic right now?" -
+        // if it fails, the pod is only taken out of rotation, so it may check dependencies.
+        app.MapHealthChecks("/health", new HealthCheckOptions { Predicate = _ => false }).AllowAnonymous();
+        app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready") }).AllowAnonymous();
 
         return app;
     }

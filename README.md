@@ -28,7 +28,7 @@ for the full roadmap, architecture and the question-to-code map.
 | 3 | Kpi.Api, Benefits.Api, ProjectInitiationSaga | ✅ |
 | 4 | Reporting.Api CQRS read model + live dashboard | ✅ |
 | 5 | Identity (JWT), Discovery, YARP Gateway | ✅ |
-| 6 | Observability, correlation, contract tests | ⏳ |
+| 6 | Observability, correlation, contract tests | ✅ |
 | 7 | Monolith sample, Docker/K8s, the 25 question docs | ⏳ |
 
 ## How it's built

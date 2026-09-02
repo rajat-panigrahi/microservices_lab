@@ -28,6 +28,11 @@ builder.Services.AddValidatorsFromAssembly(serviceAssembly, includeInternalTypes
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddChaos();
 
+// Tagged "ready", so it is checked by /health/ready but NOT by /health (liveness). A
+// database blip should take this instance out of rotation, never restart the process.
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<RiskDbContext>("database", tags: ["ready"]);
+
 builder.Services.AddStrategyOpsSwagger(
     "StrategyOps - Risk",
     "Owns project risk registers and the 5x5 probability/impact matrix. Escalating a risk starts the choreographed chain into Issues, Projects and Benefits.");

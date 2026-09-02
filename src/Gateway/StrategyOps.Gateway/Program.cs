@@ -5,12 +5,18 @@ using StrategyOps.BuildingBlocks.Api;
 using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Discovery;
+using StrategyOps.BuildingBlocks.Observability;
 using StrategyOps.BuildingBlocks.Resilience;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var serviceAssembly = typeof(Program).Assembly;
 
 var resilience = builder.Configuration.GetSection(ResilienceOptions.SectionName).Get<ResilienceOptions>() ?? new ResilienceOptions();
+
+// Structured logging and tracing, tagged as the gateway. The edge is where a correlation id
+// is usually born, so it matters that this one logs with it too.
+builder.AddStrategyOpsObservability("gateway");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
@@ -30,6 +36,7 @@ builder.Services.Configure<DiscoveryOptions>(builder.Configuration.GetSection(Di
 builder.Services.AddHttpClient<IServiceRegistryClient, ServiceRegistryClient>();
 builder.Services.AddTransient<DiscoveryHttpMessageHandler>();
 builder.Services.AddTransient<BearerTokenForwardingHandler>();
+builder.Services.AddTransient<CorrelationHttpMessageHandler>();
 
 // One named client per downstream service, so each gets its OWN circuit breaker. Sharing a
 // breaker across all of them would mean a sick KPI service tripping the breaker for Risk too,
@@ -38,6 +45,7 @@ foreach (var service in new[] { "projects", "kpi", "risk", "issues", "benefits",
 {
     builder.Services
         .AddHttpClient(service)
+        .AddHttpMessageHandler<CorrelationHttpMessageHandler>()
         .AddHttpMessageHandler<BearerTokenForwardingHandler>()
         .AddHttpMessageHandler<DiscoveryHttpMessageHandler>()
         .AddStrategyOpsResilience(resilience);
@@ -106,6 +114,8 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 app.UseExceptionHandler();
+app.UseCorrelationId();
+app.UseSerilogRequestLogging();
 app.UseSwagger();
 app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Gateway v1"));
 

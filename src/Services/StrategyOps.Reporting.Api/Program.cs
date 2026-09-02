@@ -36,6 +36,11 @@ builder.Services.AddValidatorsFromAssembly(serviceAssembly, includeInternalTypes
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddChaos();
 
+// Tagged "ready", so it is checked by /health/ready but NOT by /health (liveness). A
+// database blip should take this instance out of rotation, never restart the process.
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ReportingDbContext>("database", tags: ["ready"]);
+
 builder.Services.AddStrategyOpsSwagger(
     "StrategyOps - Reporting",
     "The CQRS read side: one denormalised row per project, built from the events the other five services publish. Owns no truth, and can be rebuilt at any time.");
