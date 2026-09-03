@@ -1,0 +1,1522 @@
+{
+  ".config/dotnet-tools.json": {
+    "mtime": 1788406923.168412,
+    "ast_hash": "c007f1fbb503813c6e6acddd4939b889",
+    "semantic_hash": "c007f1fbb503813c6e6acddd4939b889"
+  },
+  "StrategyOps.sln": {
+    "mtime": 1788406923.1709516,
+    "ast_hash": "af9a6ead9d34b6bf3ad7dae20b9a1f5a",
+    "semantic_hash": "af9a6ead9d34b6bf3ad7dae20b9a1f5a"
+  },
+  "deploy/build-images.sh": {
+    "mtime": 1788406923.1709516,
+    "ast_hash": "cd0d6b77c59f6d9a4bc375514890938c",
+    "semantic_hash": "cd0d6b77c59f6d9a4bc375514890938c"
+  },
+  "deploy/docker/init-databases.sql": {
+    "mtime": 1788406923.171951,
+    "ast_hash": "837f5f70a5baa5dc88a7c239f3475762",
+    "semantic_hash": "837f5f70a5baa5dc88a7c239f3475762"
+  },
+  "deploy/local/run-all.sh": {
+    "mtime": 1788406923.1729507,
+    "ast_hash": "af2f95da75ee69476b58862cea55ee97",
+    "semantic_hash": "af2f95da75ee69476b58862cea55ee97"
+  },
+  "deploy/local/stop-all.sh": {
+    "mtime": 1788406923.1729507,
+    "ast_hash": "708fd093e7c564409b8ac400384188f4",
+    "semantic_hash": "708fd093e7c564409b8ac400384188f4"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Api/DomainExceptionHandler.cs": {
+    "mtime": 1788406923.203259,
+    "ast_hash": "a72f9d9aa803e21905e4edab69600da3",
+    "semantic_hash": "a72f9d9aa803e21905e4edab69600da3"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Api/EndpointExtensions.cs": {
+    "mtime": 1788406923.203259,
+    "ast_hash": "777112b9248382e336c63c6bad296723",
+    "semantic_hash": "777112b9248382e336c63c6bad296723"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Api/IEndpoint.cs": {
+    "mtime": 1788406923.2082026,
+    "ast_hash": "b21706b29a6dfc54d0550d717d260744",
+    "semantic_hash": "b21706b29a6dfc54d0550d717d260744"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Api/ResultExtensions.cs": {
+    "mtime": 1788406923.2082026,
+    "ast_hash": "8f1e1536ebe6c959048c48aff7b2f30f",
+    "semantic_hash": "8f1e1536ebe6c959048c48aff7b2f30f"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Api/ValidationFilter.cs": {
+    "mtime": 1788406923.2092142,
+    "ast_hash": "8e1c2cb0bfa6916e308cb93ab37befdd",
+    "semantic_hash": "8e1c2cb0bfa6916e308cb93ab37befdd"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Auth/AuthExtensions.cs": {
+    "mtime": 1788406923.2123566,
+    "ast_hash": "0cb82a5c8fecc9eb2e15ce1e710b182d",
+    "semantic_hash": "0cb82a5c8fecc9eb2e15ce1e710b182d"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Auth/BearerTokenForwardingHandler.cs": {
+    "mtime": 1788406923.2143593,
+    "ast_hash": "652d976afe865bf8fe1b3d22940b7f9b",
+    "semantic_hash": "652d976afe865bf8fe1b3d22940b7f9b"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Auth/CurrentUser.cs": {
+    "mtime": 1788406923.215352,
+    "ast_hash": "9f29c2fff27e02c2a0fa7b8b0a92131e",
+    "semantic_hash": "9f29c2fff27e02c2a0fa7b8b0a92131e"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Auth/JwtOptions.cs": {
+    "mtime": 1788406923.21636,
+    "ast_hash": "771ba39b0914a76dd7f2b4baedadd132",
+    "semantic_hash": "771ba39b0914a76dd7f2b4baedadd132"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Auth/Roles.cs": {
+    "mtime": 1788406923.2173574,
+    "ast_hash": "fbb436651d46dfecf8c9fdc3e9d1d69d",
+    "semantic_hash": "fbb436651d46dfecf8c9fdc3e9d1d69d"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Chaos/ChaosEndpoints.cs": {
+    "mtime": 1788406923.218349,
+    "ast_hash": "d1ba8cecf20a07e1e0819f36f21187c8",
+    "semantic_hash": "d1ba8cecf20a07e1e0819f36f21187c8"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Correlation/CorrelationHttpMessageHandler.cs": {
+    "mtime": 1788406923.218349,
+    "ast_hash": "4c369ef91d2e29c291e677ccd2de53e8",
+    "semantic_hash": "4c369ef91d2e29c291e677ccd2de53e8"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Correlation/CorrelationIdMiddleware.cs": {
+    "mtime": 1788406923.218349,
+    "ast_hash": "a434d1bedbebda0dfa70a5121fecf697",
+    "semantic_hash": "a434d1bedbebda0dfa70a5121fecf697"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Correlation/ICorrelationContext.cs": {
+    "mtime": 1788406923.2193508,
+    "ast_hash": "6a6b3ab4444617cae29fa9b9e1c26caf",
+    "semantic_hash": "6a6b3ab4444617cae29fa9b9e1c26caf"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Discovery/DiscoveryClient.cs": {
+    "mtime": 1788406923.2193508,
+    "ast_hash": "55056e1f019f61eefd688cf38b428b79",
+    "semantic_hash": "55056e1f019f61eefd688cf38b428b79"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Discovery/DiscoveryHttpMessageHandler.cs": {
+    "mtime": 1788406923.2203531,
+    "ast_hash": "7408ce796c2db4dee21f1df27b126640",
+    "semantic_hash": "7408ce796c2db4dee21f1df27b126640"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Discovery/ServiceRegistrationService.cs": {
+    "mtime": 1788406923.2203531,
+    "ast_hash": "a34a8e5a20830c7e2887a6b75ecdc1d7",
+    "semantic_hash": "a34a8e5a20830c7e2887a6b75ecdc1d7"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Domain/DomainException.cs": {
+    "mtime": 1788406923.2211208,
+    "ast_hash": "1d07ba8d3d4c0828288981d1d1ea7d8b",
+    "semantic_hash": "1d07ba8d3d4c0828288981d1d1ea7d8b"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Domain/Guard.cs": {
+    "mtime": 1788406923.2211208,
+    "ast_hash": "6a0234acc1ae0c2d4ee03147ff0c6376",
+    "semantic_hash": "6a0234acc1ae0c2d4ee03147ff0c6376"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Hosting/ServiceDefaults.cs": {
+    "mtime": 1788406923.2211208,
+    "ast_hash": "b8df68e671aee7cf59062fcd8231712a",
+    "semantic_hash": "b8df68e671aee7cf59062fcd8231712a"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Inbox/IInboxDbContext.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "ff8696d33dd2d701533a5301b3574bbb",
+    "semantic_hash": "ff8696d33dd2d701533a5301b3574bbb"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Inbox/IInboxStore.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "120b97da2d1f88b66583f0fb7529f565",
+    "semantic_hash": "120b97da2d1f88b66583f0fb7529f565"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Inbox/InboxMessage.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "0104ab28b87108155ba0c71eed3e728e",
+    "semantic_hash": "0104ab28b87108155ba0c71eed3e728e"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Inbox/InboxModelBuilderExtensions.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "6af3513b7c1c3c6c1e40fb2f703ef529",
+    "semantic_hash": "6af3513b7c1c3c6c1e40fb2f703ef529"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Inbox/InboxStore.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "18964b2544311145f3531f446f0e2dbd",
+    "semantic_hash": "18964b2544311145f3531f446f0e2dbd"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Messaging/CorrelationFilters.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "a992fae8937213663eabd9dc4924878b",
+    "semantic_hash": "a992fae8937213663eabd9dc4924878b"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Messaging/IdempotentConsumer.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "9013076e94886880db9d7eca818eda8a",
+    "semantic_hash": "9013076e94886880db9d7eca818eda8a"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Messaging/MassTransitIntegrationEventPublisher.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "386cdf4a07e3dfbc560f5ac0608496db",
+    "semantic_hash": "386cdf4a07e3dfbc560f5ac0608496db"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Messaging/MessagingExtensions.cs": {
+    "mtime": 1788406923.2231293,
+    "ast_hash": "53dccfec9439d3206172dceecdcac2db",
+    "semantic_hash": "53dccfec9439d3206172dceecdcac2db"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Observability/ObservabilityExtensions.cs": {
+    "mtime": 1788406923.2251394,
+    "ast_hash": "de610dd240116eade9250a15085ffc56",
+    "semantic_hash": "de610dd240116eade9250a15085ffc56"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/IIntegrationEventPublisher.cs": {
+    "mtime": 1788406923.2271686,
+    "ast_hash": "02ce780bde9babd8015c6c3bdf2c2c0b",
+    "semantic_hash": "02ce780bde9babd8015c6c3bdf2c2c0b"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/IOutboxDbContext.cs": {
+    "mtime": 1788406923.2271686,
+    "ast_hash": "1a625b0a0f8d1adb971cacc1b00d07d0",
+    "semantic_hash": "1a625b0a0f8d1adb971cacc1b00d07d0"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/IOutboxWriter.cs": {
+    "mtime": 1788406923.2291877,
+    "ast_hash": "470bb61d0f9503d3f0d0b250b57edcb2",
+    "semantic_hash": "470bb61d0f9503d3f0d0b250b57edcb2"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/IntegrationEventTypeRegistry.cs": {
+    "mtime": 1788406923.2291877,
+    "ast_hash": "489f0d151417942717867e9de87e10b8",
+    "semantic_hash": "489f0d151417942717867e9de87e10b8"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/LoggingIntegrationEventPublisher.cs": {
+    "mtime": 1788406923.2291877,
+    "ast_hash": "e9c79523feb06c1338776f5715b90de1",
+    "semantic_hash": "e9c79523feb06c1338776f5715b90de1"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxMessage.cs": {
+    "mtime": 1788406923.2312171,
+    "ast_hash": "1a0182bdf027b628acc532a62001e61a",
+    "semantic_hash": "1a0182bdf027b628acc532a62001e61a"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxModelBuilderExtensions.cs": {
+    "mtime": 1788406923.2321076,
+    "ast_hash": "2b537dd295863950f5b8302b86916785",
+    "semantic_hash": "2b537dd295863950f5b8302b86916785"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxProcessor.cs": {
+    "mtime": 1788406923.233402,
+    "ast_hash": "701f84ff72798bb454b656213c010d4e",
+    "semantic_hash": "701f84ff72798bb454b656213c010d4e"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxPublisherService.cs": {
+    "mtime": 1788406923.2341387,
+    "ast_hash": "715ec95a8aecf50a840dba7f1cb37822",
+    "semantic_hash": "715ec95a8aecf50a840dba7f1cb37822"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxServiceCollectionExtensions.cs": {
+    "mtime": 1788406923.2351632,
+    "ast_hash": "4d3f03cca40ab1c20f0924fa7a974f89",
+    "semantic_hash": "4d3f03cca40ab1c20f0924fa7a974f89"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Outbox/OutboxWriter.cs": {
+    "mtime": 1788406923.236159,
+    "ast_hash": "c1fcb232c5169c56cc2f915199100261",
+    "semantic_hash": "c1fcb232c5169c56cc2f915199100261"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Persistence/SqliteConventions.cs": {
+    "mtime": 1788406923.23715,
+    "ast_hash": "a8657102be31ba2b25f5831c95ed538f",
+    "semantic_hash": "a8657102be31ba2b25f5831c95ed538f"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Resilience/ResilienceExtensions.cs": {
+    "mtime": 1788406923.23715,
+    "ast_hash": "862930b45af8129777d689c9554c8c5b",
+    "semantic_hash": "862930b45af8129777d689c9554c8c5b"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Results/Result.cs": {
+    "mtime": 1788406923.23715,
+    "ast_hash": "310ad357247b1c3383ed91397e2c754f",
+    "semantic_hash": "310ad357247b1c3383ed91397e2c754f"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/StrategyOps.BuildingBlocks.csproj": {
+    "mtime": 1788406923.2381482,
+    "ast_hash": "e5576abd21f8cc65f21907bb42acaf4d",
+    "semantic_hash": "e5576abd21f8cc65f21907bb42acaf4d"
+  },
+  "src/BuildingBlocks/StrategyOps.BuildingBlocks/Time/IClock.cs": {
+    "mtime": 1788406923.2381482,
+    "ast_hash": "d3d5f92654db65e0242f979a6e4efe93",
+    "semantic_hash": "d3d5f92654db65e0242f979a6e4efe93"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/StrategyOps.Contracts.csproj": {
+    "mtime": 1788406923.2381482,
+    "ast_hash": "41f7a183b4e34bb798e756289ecf0c72",
+    "semantic_hash": "41f7a183b4e34bb798e756289ecf0c72"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Benefits/BenefitEvents.cs": {
+    "mtime": 1788406923.2391489,
+    "ast_hash": "0972c9ad24f76c5c155a27544add7d53",
+    "semantic_hash": "0972c9ad24f76c5c155a27544add7d53"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/IntegrationEvent.cs": {
+    "mtime": 1788406923.2391489,
+    "ast_hash": "5d0a54bb71bed4a6b482fc127ddbeb4c",
+    "semantic_hash": "5d0a54bb71bed4a6b482fc127ddbeb4c"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Issues/IssueEvents.cs": {
+    "mtime": 1788406923.2391489,
+    "ast_hash": "61c56fa5915990b84349b253fc30ce7a",
+    "semantic_hash": "61c56fa5915990b84349b253fc30ce7a"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Kpis/KpiEvents.cs": {
+    "mtime": 1788406923.2401507,
+    "ast_hash": "445c266a647e479fe7a91d0a80ab9ff4",
+    "semantic_hash": "445c266a647e479fe7a91d0a80ab9ff4"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Projects/ProjectEvents.cs": {
+    "mtime": 1788406923.2401507,
+    "ast_hash": "a16d4044bdf7daa74021a8cab239fb93",
+    "semantic_hash": "a16d4044bdf7daa74021a8cab239fb93"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Risks/RiskEvents.cs": {
+    "mtime": 1788406923.2411506,
+    "ast_hash": "a05eecfaf4d9ef0fe9ee89268ab0410f",
+    "semantic_hash": "a05eecfaf4d9ef0fe9ee89268ab0410f"
+  },
+  "src/BuildingBlocks/StrategyOps.Contracts/V1/Sagas/InitiationCommands.cs": {
+    "mtime": 1788406923.2411506,
+    "ast_hash": "7723e44e40a1c22337eeaf831f1cdc7e",
+    "semantic_hash": "7723e44e40a1c22337eeaf831f1cdc7e"
+  },
+  "src/Gateway/StrategyOps.Gateway/Features/PortfolioOverview/PortfolioOverview.cs": {
+    "mtime": 1788406923.2421496,
+    "ast_hash": "a3fb6160f963f588d41747ff9695975a",
+    "semantic_hash": "a3fb6160f963f588d41747ff9695975a"
+  },
+  "src/Gateway/StrategyOps.Gateway/GatewayEntryPoint.cs": {
+    "mtime": 1788406923.2421496,
+    "ast_hash": "21527b1d7f166c837ef4afd7e23f7556",
+    "semantic_hash": "21527b1d7f166c837ef4afd7e23f7556"
+  },
+  "src/Gateway/StrategyOps.Gateway/Program.cs": {
+    "mtime": 1788406923.2421496,
+    "ast_hash": "73477bf33cdfffe1ee2f76282221f27c",
+    "semantic_hash": "73477bf33cdfffe1ee2f76282221f27c"
+  },
+  "src/Gateway/StrategyOps.Gateway/Properties/launchSettings.json": {
+    "mtime": 1788406923.2431493,
+    "ast_hash": "cb6dc2a9c658f059d8c2eed8e5004db9",
+    "semantic_hash": "cb6dc2a9c658f059d8c2eed8e5004db9"
+  },
+  "src/Gateway/StrategyOps.Gateway/StrategyOps.Gateway.csproj": {
+    "mtime": 1788406923.2431493,
+    "ast_hash": "122f3671ee54b38f2598cdd58162634a",
+    "semantic_hash": "122f3671ee54b38f2598cdd58162634a"
+  },
+  "src/Gateway/StrategyOps.Gateway/appsettings.Development.json": {
+    "mtime": 1788406923.2441583,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Gateway/StrategyOps.Gateway/appsettings.json": {
+    "mtime": 1788406923.2461665,
+    "ast_hash": "c659b0a3d79a6831dc5e5538cbbf8b74",
+    "semantic_hash": "c659b0a3d79a6831dc5e5538cbbf8b74"
+  },
+  "src/Monolith/StrategyOps.Monolith/Model.cs": {
+    "mtime": 1788406923.2483718,
+    "ast_hash": "f2ebaf2d7220aa8affe408112218d0ee",
+    "semantic_hash": "f2ebaf2d7220aa8affe408112218d0ee"
+  },
+  "src/Monolith/StrategyOps.Monolith/Program.cs": {
+    "mtime": 1788406923.2497513,
+    "ast_hash": "d21f29911d5146d2cd09052667a03f28",
+    "semantic_hash": "d21f29911d5146d2cd09052667a03f28"
+  },
+  "src/Monolith/StrategyOps.Monolith/Properties/launchSettings.json": {
+    "mtime": 1788406923.2508588,
+    "ast_hash": "892af42577a7bd7ce541c2a8737b9091",
+    "semantic_hash": "892af42577a7bd7ce541c2a8737b9091"
+  },
+  "src/Monolith/StrategyOps.Monolith/StrategyOps.Monolith.csproj": {
+    "mtime": 1788406923.2518542,
+    "ast_hash": "d88d23ef3eb9c9dbf31580566a546f21",
+    "semantic_hash": "d88d23ef3eb9c9dbf31580566a546f21"
+  },
+  "src/Monolith/StrategyOps.Monolith/appsettings.Development.json": {
+    "mtime": 1788406923.2518542,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Monolith/StrategyOps.Monolith/appsettings.json": {
+    "mtime": 1788406923.2528577,
+    "ast_hash": "723f3213034c3ffae443eeae5ef44e31",
+    "semantic_hash": "723f3213034c3ffae443eeae5ef44e31"
+  },
+  "src/Services/StrategyOps.Benefits.Api/BenefitsApiEntryPoint.cs": {
+    "mtime": 1788406923.2538607,
+    "ast_hash": "2a2375667cb27cec1d1b3ecc20059f3a",
+    "semantic_hash": "2a2375667cb27cec1d1b3ecc20059f3a"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Domain/BenefitEnums.cs": {
+    "mtime": 1788406923.2538607,
+    "ast_hash": "36c3546f0beec813bb5ba90062c36266",
+    "semantic_hash": "36c3546f0beec813bb5ba90062c36266"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Domain/BenefitProfile.cs": {
+    "mtime": 1788406923.254852,
+    "ast_hash": "4d2589fd8b171f16ebb5f3a667ef8cc3",
+    "semantic_hash": "4d2589fd8b171f16ebb5f3a667ef8cc3"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Domain/BenefitRealisation.cs": {
+    "mtime": 1788406923.254852,
+    "ast_hash": "784d9596ddea13e13563332bb5d90400",
+    "semantic_hash": "784d9596ddea13e13563332bb5d90400"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Domain/PortfolioBenefitPolicy.cs": {
+    "mtime": 1788406923.254852,
+    "ast_hash": "7993033920c91a375eabbd0381732710",
+    "semantic_hash": "7993033920c91a375eabbd0381732710"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Features/Consumers/FlagBenefitAtRiskConsumer.cs": {
+    "mtime": 1788406923.2558503,
+    "ast_hash": "0d3c5d5168938874573d0efc469d365c",
+    "semantic_hash": "0d3c5d5168938874573d0efc469d365c"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Features/Consumers/RegisterBenefitProfileConsumer.cs": {
+    "mtime": 1788406923.2558503,
+    "ast_hash": "b5dc03bdd43d84540b0ac5c1e4b3fe95",
+    "semantic_hash": "b5dc03bdd43d84540b0ac5c1e4b3fe95"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Features/Consumers/WithdrawBenefitProfileConsumer.cs": {
+    "mtime": 1788406923.2558503,
+    "ast_hash": "0a3190f1679e53c55aa81d36633b35fb",
+    "semantic_hash": "0a3190f1679e53c55aa81d36633b35fb"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Features/GetBenefitProfile/GetBenefitProfile.cs": {
+    "mtime": 1788406923.2568505,
+    "ast_hash": "ff46497a730faaaab80faa983e91d8ad",
+    "semantic_hash": "ff46497a730faaaab80faa983e91d8ad"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Features/RecordRealisation/RecordRealisation.cs": {
+    "mtime": 1788406923.2568505,
+    "ast_hash": "00a3bd72202071646f680d7e1085fe3b",
+    "semantic_hash": "00a3bd72202071646f680d7e1085fe3b"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Infrastructure/BenefitsDbContext.cs": {
+    "mtime": 1788406923.2568505,
+    "ast_hash": "145dfd8dea30d5f4649c6c8e4058165b",
+    "semantic_hash": "145dfd8dea30d5f4649c6c8e4058165b"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Infrastructure/Migrations/20260831014158_InitialBenefitsSchema.Designer.cs": {
+    "mtime": 1788406923.2578487,
+    "ast_hash": "5e4a70b785350a94ef2c9c9f40062a85",
+    "semantic_hash": "5e4a70b785350a94ef2c9c9f40062a85"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Infrastructure/Migrations/20260831014158_InitialBenefitsSchema.cs": {
+    "mtime": 1788406923.2578487,
+    "ast_hash": "88b38afa1340dbce05255e39e88a8968",
+    "semantic_hash": "88b38afa1340dbce05255e39e88a8968"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Infrastructure/Migrations/BenefitsDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.2578487,
+    "ast_hash": "5c8fca2844db2337daa198333a2e4f84",
+    "semantic_hash": "5c8fca2844db2337daa198333a2e4f84"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Program.cs": {
+    "mtime": 1788406923.2578487,
+    "ast_hash": "c19d1c5d89ddf5d693538dcdbd518c29",
+    "semantic_hash": "c19d1c5d89ddf5d693538dcdbd518c29"
+  },
+  "src/Services/StrategyOps.Benefits.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2588494,
+    "ast_hash": "da3da55e68b16fe101c6043240f6715d",
+    "semantic_hash": "da3da55e68b16fe101c6043240f6715d"
+  },
+  "src/Services/StrategyOps.Benefits.Api/StrategyOps.Benefits.Api.csproj": {
+    "mtime": 1788406923.2588494,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Benefits.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2588494,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Benefits.Api/appsettings.json": {
+    "mtime": 1788406923.259971,
+    "ast_hash": "cffec92d20155372e8243838d70d9da1",
+    "semantic_hash": "cffec92d20155372e8243838d70d9da1"
+  },
+  "src/Services/StrategyOps.Discovery.Api/DiscoveryApiEntryPoint.cs": {
+    "mtime": 1788406923.260546,
+    "ast_hash": "4134aff7b5d7460195a3e1907c04fae2",
+    "semantic_hash": "4134aff7b5d7460195a3e1907c04fae2"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Domain/ServiceInstance.cs": {
+    "mtime": 1788406923.260546,
+    "ast_hash": "bd57363e1f1b8327e9ef3ed1a8676920",
+    "semantic_hash": "bd57363e1f1b8327e9ef3ed1a8676920"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Features/Registry/RegistryEndpoints.cs": {
+    "mtime": 1788406923.260546,
+    "ast_hash": "18df9e9486bc08bfdf4fcd35decaa945",
+    "semantic_hash": "18df9e9486bc08bfdf4fcd35decaa945"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Infrastructure/RegistryReaper.cs": {
+    "mtime": 1788406923.260546,
+    "ast_hash": "7aac2128735533cc2ce8c079bf984c21",
+    "semantic_hash": "7aac2128735533cc2ce8c079bf984c21"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Infrastructure/ServiceRegistry.cs": {
+    "mtime": 1788406923.2672837,
+    "ast_hash": "cbc6c425b2bb07f7f8e905e3b65d30d2",
+    "semantic_hash": "cbc6c425b2bb07f7f8e905e3b65d30d2"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Program.cs": {
+    "mtime": 1788406923.2672837,
+    "ast_hash": "25af17edfa8e66bbced6ff26c7bd265b",
+    "semantic_hash": "25af17edfa8e66bbced6ff26c7bd265b"
+  },
+  "src/Services/StrategyOps.Discovery.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2672837,
+    "ast_hash": "59e7123dd3304f1814e81aee5ee60c7d",
+    "semantic_hash": "59e7123dd3304f1814e81aee5ee60c7d"
+  },
+  "src/Services/StrategyOps.Discovery.Api/StrategyOps.Discovery.Api.csproj": {
+    "mtime": 1788406923.2700486,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Discovery.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Discovery.Api/appsettings.json": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "9c19dce6f09ef044ffe2afe93671f5d0",
+    "semantic_hash": "9c19dce6f09ef044ffe2afe93671f5d0"
+  },
+  "src/Services/StrategyOps.Identity.Api/Domain/PortfolioUser.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "fe8b366e9bb6cd375d4b95628297dab2",
+    "semantic_hash": "fe8b366e9bb6cd375d4b95628297dab2"
+  },
+  "src/Services/StrategyOps.Identity.Api/Domain/RefreshToken.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "ed6d1789e7f08e9e188d7d3413cc6004",
+    "semantic_hash": "ed6d1789e7f08e9e188d7d3413cc6004"
+  },
+  "src/Services/StrategyOps.Identity.Api/Features/IssueToken/IssueToken.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "794d3b1ec0c05049c9773447db556d74",
+    "semantic_hash": "794d3b1ec0c05049c9773447db556d74"
+  },
+  "src/Services/StrategyOps.Identity.Api/Features/Me/GetMe.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "bc665af1ad1e6d121c128839f1c39a59",
+    "semantic_hash": "bc665af1ad1e6d121c128839f1c39a59"
+  },
+  "src/Services/StrategyOps.Identity.Api/Features/Refresh/RefreshAccessToken.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "490e85e25787734a0630d3afae8abaad",
+    "semantic_hash": "490e85e25787734a0630d3afae8abaad"
+  },
+  "src/Services/StrategyOps.Identity.Api/IdentityApiEntryPoint.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "cd10697730b6aa96e037da64b75d7f07",
+    "semantic_hash": "cd10697730b6aa96e037da64b75d7f07"
+  },
+  "src/Services/StrategyOps.Identity.Api/Infrastructure/IdentityDbContext.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "309463f717e1129f2ef04af3f3fad7e1",
+    "semantic_hash": "309463f717e1129f2ef04af3f3fad7e1"
+  },
+  "src/Services/StrategyOps.Identity.Api/Infrastructure/IdentitySeeder.cs": {
+    "mtime": 1788406923.2710652,
+    "ast_hash": "70b2db7b853d4593ce6fce9872b5bd11",
+    "semantic_hash": "70b2db7b853d4593ce6fce9872b5bd11"
+  },
+  "src/Services/StrategyOps.Identity.Api/Infrastructure/Migrations/20260902201523_InitialIdentitySchema.Designer.cs": {
+    "mtime": 1788406923.276721,
+    "ast_hash": "f79a45d3df0a46966330acf90b0e4699",
+    "semantic_hash": "f79a45d3df0a46966330acf90b0e4699"
+  },
+  "src/Services/StrategyOps.Identity.Api/Infrastructure/Migrations/20260902201523_InitialIdentitySchema.cs": {
+    "mtime": 1788406923.2777321,
+    "ast_hash": "43fa33c9d4bd73dcd7dc6d16523f90ab",
+    "semantic_hash": "43fa33c9d4bd73dcd7dc6d16523f90ab"
+  },
+  "src/Services/StrategyOps.Identity.Api/Infrastructure/Migrations/IdentityDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.2797303,
+    "ast_hash": "9be4487845b502282df4afe6b157eda6",
+    "semantic_hash": "9be4487845b502282df4afe6b157eda6"
+  },
+  "src/Services/StrategyOps.Identity.Api/Program.cs": {
+    "mtime": 1788406923.2797303,
+    "ast_hash": "079310e718f7291db46d06a7e479191f",
+    "semantic_hash": "079310e718f7291db46d06a7e479191f"
+  },
+  "src/Services/StrategyOps.Identity.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "e094b9fbacbf135baa8f67c83a1f7a4b",
+    "semantic_hash": "e094b9fbacbf135baa8f67c83a1f7a4b"
+  },
+  "src/Services/StrategyOps.Identity.Api/StrategyOps.Identity.Api.csproj": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "f28cc49f5cdfc88a101858cc75a2f4da",
+    "semantic_hash": "f28cc49f5cdfc88a101858cc75a2f4da"
+  },
+  "src/Services/StrategyOps.Identity.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Identity.Api/appsettings.json": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "e5751c38216fe38761eba9d41db9c222",
+    "semantic_hash": "e5751c38216fe38761eba9d41db9c222"
+  },
+  "src/Services/StrategyOps.Issues.Api/Domain/Issue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "711dcfd7ae8be40b671c259b296c825d",
+    "semantic_hash": "711dcfd7ae8be40b671c259b296c825d"
+  },
+  "src/Services/StrategyOps.Issues.Api/Domain/IssueEnums.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "86139ed22b97730ee2bfc1123360e1dc",
+    "semantic_hash": "86139ed22b97730ee2bfc1123360e1dc"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/AssignIssue/AssignIssue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "8104ccf4f6db7923bf482fdfe6bf80cf",
+    "semantic_hash": "8104ccf4f6db7923bf482fdfe6bf80cf"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/Consumers/CloseIssuesOnProjectClosedConsumer.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "aaf4fee1498cede9d9629a348524852c",
+    "semantic_hash": "aaf4fee1498cede9d9629a348524852c"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/Consumers/RaiseIssueOnRiskEscalatedConsumer.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "cf9361417c3487f15639aae3976671f3",
+    "semantic_hash": "cf9361417c3487f15639aae3976671f3"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/GetIssue/GetIssue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "a97c228c661359f88729417dd895a191",
+    "semantic_hash": "a97c228c661359f88729417dd895a191"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/ListIssues/ListIssues.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "f8f27a7f7a255ffad382088ee2aa0ec8",
+    "semantic_hash": "f8f27a7f7a255ffad382088ee2aa0ec8"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/RaiseIssue/RaiseIssue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "517c0856e03ece830c4fa79320177121",
+    "semantic_hash": "517c0856e03ece830c4fa79320177121"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/ResolveIssue/ResolveIssue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "0fcbc5a986ef2e5b8b3645b512e13709",
+    "semantic_hash": "0fcbc5a986ef2e5b8b3645b512e13709"
+  },
+  "src/Services/StrategyOps.Issues.Api/Features/StartIssue/StartIssue.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "fb4fbfd812549543fc22bb75051d2b84",
+    "semantic_hash": "fb4fbfd812549543fc22bb75051d2b84"
+  },
+  "src/Services/StrategyOps.Issues.Api/Infrastructure/IssuesDbContext.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "90943f729b77f53c775a4b8b07db5f44",
+    "semantic_hash": "90943f729b77f53c775a4b8b07db5f44"
+  },
+  "src/Services/StrategyOps.Issues.Api/Infrastructure/Migrations/20260831012531_InitialIssuesSchema.Designer.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "fb7960e6c273994e1dee03bccc37c099",
+    "semantic_hash": "fb7960e6c273994e1dee03bccc37c099"
+  },
+  "src/Services/StrategyOps.Issues.Api/Infrastructure/Migrations/20260831012531_InitialIssuesSchema.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "0b2f4002c7dbc9f1e6a3c8af2c5087da",
+    "semantic_hash": "0b2f4002c7dbc9f1e6a3c8af2c5087da"
+  },
+  "src/Services/StrategyOps.Issues.Api/Infrastructure/Migrations/IssuesDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "13eb796bdfa9c91e3687711ea2595ce8",
+    "semantic_hash": "13eb796bdfa9c91e3687711ea2595ce8"
+  },
+  "src/Services/StrategyOps.Issues.Api/IssuesApiEntryPoint.cs": {
+    "mtime": 1788406923.2811913,
+    "ast_hash": "97b9570c0aa130d1ee5ca974bbb13395",
+    "semantic_hash": "97b9570c0aa130d1ee5ca974bbb13395"
+  },
+  "src/Services/StrategyOps.Issues.Api/Program.cs": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "8da09d19aa1a1f619eedca2e1ebb1bd2",
+    "semantic_hash": "8da09d19aa1a1f619eedca2e1ebb1bd2"
+  },
+  "src/Services/StrategyOps.Issues.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "06f249ec906ee609cbbf289e76a4c97f",
+    "semantic_hash": "06f249ec906ee609cbbf289e76a4c97f"
+  },
+  "src/Services/StrategyOps.Issues.Api/StrategyOps.Issues.Api.csproj": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Issues.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Issues.Api/appsettings.json": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "03eb21a1471e84bfec8769a16f9f22cb",
+    "semantic_hash": "03eb21a1471e84bfec8769a16f9f22cb"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Domain/KpiDefinition.cs": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "e594a4adae8a044fdff8c970974b06a5",
+    "semantic_hash": "e594a4adae8a044fdff8c970974b06a5"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Domain/KpiEnums.cs": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "ab834643977cc2e88010edfe42c5fc16",
+    "semantic_hash": "ab834643977cc2e88010edfe42c5fc16"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Domain/KpiMeasurement.cs": {
+    "mtime": 1788406923.2895632,
+    "ast_hash": "1ef5ef21898f1158cdb9fe4fd605acbc",
+    "semantic_hash": "1ef5ef21898f1158cdb9fe4fd605acbc"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Domain/KpiScorecard.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "899f2e119b0a7c84bd0f67c2b52d7210",
+    "semantic_hash": "899f2e119b0a7c84bd0f67c2b52d7210"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Features/Consumers/CloseScorecardOnProjectClosedConsumer.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "d605f70e7554021aeeb12e96742317ad",
+    "semantic_hash": "d605f70e7554021aeeb12e96742317ad"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Features/Consumers/ProvisionKpiScorecardConsumer.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "0bb33d0f1d1b6ea494bc412f574f10c1",
+    "semantic_hash": "0bb33d0f1d1b6ea494bc412f574f10c1"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Features/Consumers/WithdrawKpiScorecardConsumer.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "909a7091eede411123d33bd39ee61b62",
+    "semantic_hash": "909a7091eede411123d33bd39ee61b62"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Features/GetScorecard/GetScorecard.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "9f7947d730168411509db35b67cb9d6b",
+    "semantic_hash": "9f7947d730168411509db35b67cb9d6b"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Features/RecordMeasurement/RecordMeasurement.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "c1995dbb1d9d4ef474623d435baf77e6",
+    "semantic_hash": "c1995dbb1d9d4ef474623d435baf77e6"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Infrastructure/KpiDbContext.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "fc1785d1dce67e886be58ae7f5fd38f6",
+    "semantic_hash": "fc1785d1dce67e886be58ae7f5fd38f6"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Infrastructure/Migrations/20260831014150_InitialKpiSchema.Designer.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "d8becbfb6d1bf349fc04234eb091f117",
+    "semantic_hash": "d8becbfb6d1bf349fc04234eb091f117"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Infrastructure/Migrations/20260831014150_InitialKpiSchema.cs": {
+    "mtime": 1788406923.291128,
+    "ast_hash": "c836db83d94b85f5f94a6cf8188423a2",
+    "semantic_hash": "c836db83d94b85f5f94a6cf8188423a2"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Infrastructure/Migrations/KpiDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.293334,
+    "ast_hash": "8a11d12db9cee359b63522905d0d4d22",
+    "semantic_hash": "8a11d12db9cee359b63522905d0d4d22"
+  },
+  "src/Services/StrategyOps.Kpi.Api/KpiApiEntryPoint.cs": {
+    "mtime": 1788406923.2944162,
+    "ast_hash": "90a7ac60350cbfd8b6b4ff75ce8ecb22",
+    "semantic_hash": "90a7ac60350cbfd8b6b4ff75ce8ecb22"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Program.cs": {
+    "mtime": 1788406923.2954116,
+    "ast_hash": "49c53bcf4200b528198e728ec6a78fdb",
+    "semantic_hash": "49c53bcf4200b528198e728ec6a78fdb"
+  },
+  "src/Services/StrategyOps.Kpi.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2964094,
+    "ast_hash": "124734b7556c0d48080e5aca9cfca447",
+    "semantic_hash": "124734b7556c0d48080e5aca9cfca447"
+  },
+  "src/Services/StrategyOps.Kpi.Api/StrategyOps.Kpi.Api.csproj": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Kpi.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Kpi.Api/appsettings.json": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "4c99d718184e1efe0aa67546d255bfd1",
+    "semantic_hash": "4c99d718184e1efe0aa67546d255bfd1"
+  },
+  "src/Services/StrategyOps.Projects.Api/Domain/Project.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "dbb1fbfdf7a1a19add818d30d767c7d3",
+    "semantic_hash": "dbb1fbfdf7a1a19add818d30d767c7d3"
+  },
+  "src/Services/StrategyOps.Projects.Api/Domain/ProjectStage.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "5ef3cfeb6502375a11fdb8372bca9c13",
+    "semantic_hash": "5ef3cfeb6502375a11fdb8372bca9c13"
+  },
+  "src/Services/StrategyOps.Projects.Api/Domain/StrategicObjective.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "0d96fc8ab5cb3fe8ba202fea48e0830d",
+    "semantic_hash": "0d96fc8ab5cb3fe8ba202fea48e0830d"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/CloseProject/CloseProject.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "c8757f257bf4370b5238b04551ee8751",
+    "semantic_hash": "c8757f257bf4370b5238b04551ee8751"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/Consumers/ActivateProjectConsumer.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "1d18221112c4f2a7497fefe1a137097e",
+    "semantic_hash": "1d18221112c4f2a7497fefe1a137097e"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/Consumers/DropHealthOnIssueRaisedConsumer.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "98bc9affbc6e0443fc4f88f46f5e57e8",
+    "semantic_hash": "98bc9affbc6e0443fc4f88f46f5e57e8"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/Consumers/FailProjectInitiationConsumer.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "d2d17203518a10a98037fada976e239d",
+    "semantic_hash": "d2d17203518a10a98037fada976e239d"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/CreateObjective/CreateObjective.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "83dda180f591b1664ac5ba7af980504a",
+    "semantic_hash": "83dda180f591b1664ac5ba7af980504a"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/CreateProject/CreateProject.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "54898f2f73b61eb95b3bdab317215827",
+    "semantic_hash": "54898f2f73b61eb95b3bdab317215827"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/GetProject/GetProject.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "0d75c1280454881868298813e0d785aa",
+    "semantic_hash": "0d75c1280454881868298813e0d785aa"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/ListProjects/ListProjects.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "a9cd04aa8ce3089e865aab43fd0824be",
+    "semantic_hash": "a9cd04aa8ce3089e865aab43fd0824be"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/Sagas/ProjectInitiationSaga.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "3ea0c368de2dcb51c92b481bf0fa9647",
+    "semantic_hash": "3ea0c368de2dcb51c92b481bf0fa9647"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/Sagas/ProjectInitiationState.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "ca1049289546d7244475b10ef42fa293",
+    "semantic_hash": "ca1049289546d7244475b10ef42fa293"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/SetProjectHealth/SetProjectHealth.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "c15faf62cfd0572f6361cc7d52b8e780",
+    "semantic_hash": "c15faf62cfd0572f6361cc7d52b8e780"
+  },
+  "src/Services/StrategyOps.Projects.Api/Features/SubmitForInitiation/SubmitForInitiation.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "a09140a169964fac2c9eddd2354d9182",
+    "semantic_hash": "a09140a169964fac2c9eddd2354d9182"
+  },
+  "src/Services/StrategyOps.Projects.Api/Infrastructure/Migrations/20260831014142_InitialProjectsSchema.Designer.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "e2b4fc0990def510505b581781257af6",
+    "semantic_hash": "e2b4fc0990def510505b581781257af6"
+  },
+  "src/Services/StrategyOps.Projects.Api/Infrastructure/Migrations/20260831014142_InitialProjectsSchema.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "2e9779de4832c52240398adf370d57a9",
+    "semantic_hash": "2e9779de4832c52240398adf370d57a9"
+  },
+  "src/Services/StrategyOps.Projects.Api/Infrastructure/Migrations/ProjectsDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "15bb1cea6c0fc9762959d2010bc10d8b",
+    "semantic_hash": "15bb1cea6c0fc9762959d2010bc10d8b"
+  },
+  "src/Services/StrategyOps.Projects.Api/Infrastructure/ProjectsDbContext.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "eb77e39cf179dbde0bc69d070f1545fb",
+    "semantic_hash": "eb77e39cf179dbde0bc69d070f1545fb"
+  },
+  "src/Services/StrategyOps.Projects.Api/Program.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "d1be1176edf6c407fd2c4e15bd96804a",
+    "semantic_hash": "d1be1176edf6c407fd2c4e15bd96804a"
+  },
+  "src/Services/StrategyOps.Projects.Api/ProjectsApiEntryPoint.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "f26c85f86b9836cde9421793fea51be6",
+    "semantic_hash": "f26c85f86b9836cde9421793fea51be6"
+  },
+  "src/Services/StrategyOps.Projects.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "0c117aa1b2827b50200861faaeb97173",
+    "semantic_hash": "0c117aa1b2827b50200861faaeb97173"
+  },
+  "src/Services/StrategyOps.Projects.Api/StrategyOps.Projects.Api.csproj": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "e49b0ef03e4e4fc6243c7336d97e77c3",
+    "semantic_hash": "e49b0ef03e4e4fc6243c7336d97e77c3"
+  },
+  "src/Services/StrategyOps.Projects.Api/appsettings.Development.json": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "9401e0b4cd886a9f54f8866cb2397007",
+    "semantic_hash": "9401e0b4cd886a9f54f8866cb2397007"
+  },
+  "src/Services/StrategyOps.Projects.Api/appsettings.json": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "4e0697a2f4c05c5c43a90c3e1051d2f3",
+    "semantic_hash": "4e0697a2f4c05c5c43a90c3e1051d2f3"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Domain/PortfolioScorecard.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "943bb019f3dddc663d01073e0f9bd960",
+    "semantic_hash": "943bb019f3dddc663d01073e0f9bd960"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Domain/ProjectKpiStatus.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "257dc39cb634fd8bf4779f62446d3e33",
+    "semantic_hash": "257dc39cb634fd8bf4779f62446d3e33"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/GetPortfolio/GetPortfolio.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "3d8a94bd2cd4d0bdb274a7d29567da2b",
+    "semantic_hash": "3d8a94bd2cd4d0bdb274a7d29567da2b"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/Projections/BenefitProjections.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "cac931f3013a1770d501204e8c0a8515",
+    "semantic_hash": "cac931f3013a1770d501204e8c0a8515"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/Projections/KpiProjections.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "8938b39fa059dda10d793cd697e4b3d4",
+    "semantic_hash": "8938b39fa059dda10d793cd697e4b3d4"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/Projections/PortfolioProjection.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "acded4d75f6fe5ffcad10fe09459d038",
+    "semantic_hash": "acded4d75f6fe5ffcad10fe09459d038"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/Projections/ProjectProjections.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "057a640bf997536f8fba186a69d26f6c",
+    "semantic_hash": "057a640bf997536f8fba186a69d26f6c"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/Projections/RiskAndIssueProjections.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "cd5d6615e686346acfe38c96df0f0cdb",
+    "semantic_hash": "cd5d6615e686346acfe38c96df0f0cdb"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/RebuildReadModel/RebuildReadModel.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "6521788184b4c4d849c22f1ba8ffbf28",
+    "semantic_hash": "6521788184b4c4d849c22f1ba8ffbf28"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Features/RebuildReadModel/UpstreamClients.cs": {
+    "mtime": 1788406923.2990508,
+    "ast_hash": "7382bd650998ce1302758ac0689a5235",
+    "semantic_hash": "7382bd650998ce1302758ac0689a5235"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Hubs/PortfolioHub.cs": {
+    "mtime": 1788406923.3136666,
+    "ast_hash": "14d412a8113efc26d622a2ff2e7cea31",
+    "semantic_hash": "14d412a8113efc26d622a2ff2e7cea31"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Infrastructure/Migrations/20260831020436_InitialReportingSchema.Designer.cs": {
+    "mtime": 1788406923.31801,
+    "ast_hash": "b6aa62733e261864aac2484b31e58f0a",
+    "semantic_hash": "b6aa62733e261864aac2484b31e58f0a"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Infrastructure/Migrations/20260831020436_InitialReportingSchema.cs": {
+    "mtime": 1788406923.3206654,
+    "ast_hash": "369f46e5395692edbde7565015e763e3",
+    "semantic_hash": "369f46e5395692edbde7565015e763e3"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Infrastructure/Migrations/ReportingDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.3226895,
+    "ast_hash": "f23bd1cd98407877f6e6067f3a88ace6",
+    "semantic_hash": "f23bd1cd98407877f6e6067f3a88ace6"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Infrastructure/ReportingDbContext.cs": {
+    "mtime": 1788406923.3226895,
+    "ast_hash": "f4eb9e5766460416e00bbb9bbabdf88a",
+    "semantic_hash": "f4eb9e5766460416e00bbb9bbabdf88a"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Program.cs": {
+    "mtime": 1788406923.3226895,
+    "ast_hash": "e505e99cca3ed8d745024537b6a63451",
+    "semantic_hash": "e505e99cca3ed8d745024537b6a63451"
+  },
+  "src/Services/StrategyOps.Reporting.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.3226895,
+    "ast_hash": "abb352b21adc462dcc52dd6c6cffba3c",
+    "semantic_hash": "abb352b21adc462dcc52dd6c6cffba3c"
+  },
+  "src/Services/StrategyOps.Reporting.Api/ReportingApiEntryPoint.cs": {
+    "mtime": 1788406923.3226895,
+    "ast_hash": "9ae71de10044996b4b01425bb0abf0e9",
+    "semantic_hash": "9ae71de10044996b4b01425bb0abf0e9"
+  },
+  "src/Services/StrategyOps.Reporting.Api/StrategyOps.Reporting.Api.csproj": {
+    "mtime": 1788406923.3283293,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Reporting.Api/appsettings.Development.json": {
+    "mtime": 1788406923.3283293,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Reporting.Api/appsettings.json": {
+    "mtime": 1788406923.3303523,
+    "ast_hash": "7cccc519cfe4a8b3f259cdece1cf33ba",
+    "semantic_hash": "7cccc519cfe4a8b3f259cdece1cf33ba"
+  },
+  "src/Services/StrategyOps.Risk.Api/Domain/Risk.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "10b89b91713e6768c2bf1753d7a28897",
+    "semantic_hash": "10b89b91713e6768c2bf1753d7a28897"
+  },
+  "src/Services/StrategyOps.Risk.Api/Domain/RiskEnums.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "e83393505e27995ead59c8e02ed94e6c",
+    "semantic_hash": "e83393505e27995ead59c8e02ed94e6c"
+  },
+  "src/Services/StrategyOps.Risk.Api/Domain/RiskRegister.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "182bad75cea72659f5550d7bc3a354e7",
+    "semantic_hash": "182bad75cea72659f5550d7bc3a354e7"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/CloseRisk/CloseRisk.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "ce3cf2e22ba350a04944b6c5f79e1457",
+    "semantic_hash": "ce3cf2e22ba350a04944b6c5f79e1457"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/Consumers/CloseRiskOnIssueResolvedConsumer.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "2db08c3b154d2c33b58ce8f278046a8f",
+    "semantic_hash": "2db08c3b154d2c33b58ce8f278046a8f"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/Consumers/CloseRiskRegisterConsumer.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "1ef800794008676e4a667eeb3fbc4d27",
+    "semantic_hash": "1ef800794008676e4a667eeb3fbc4d27"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/Consumers/ProvisionRiskRegisterConsumer.cs": {
+    "mtime": 1788406923.3317492,
+    "ast_hash": "f68bbb5f65db5a1c13ec88c754500a26",
+    "semantic_hash": "f68bbb5f65db5a1c13ec88c754500a26"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/Consumers/WithdrawRiskRegisterConsumer.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "eabb31aae93801ecc7649189878effa1",
+    "semantic_hash": "eabb31aae93801ecc7649189878effa1"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/EscalateRisk/EscalateRisk.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "00b502a5cbee220f5b6cf49248ece091",
+    "semantic_hash": "00b502a5cbee220f5b6cf49248ece091"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/GetRiskRegister/GetRiskRegister.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "94573dbe2e1d0967dc355514e1529480",
+    "semantic_hash": "94573dbe2e1d0967dc355514e1529480"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/PlanMitigation/PlanMitigation.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "2a08c760d155c0f588fded84fbf355d1",
+    "semantic_hash": "2a08c760d155c0f588fded84fbf355d1"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/RaiseRisk/RaiseRisk.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "75abe97fdca1ea0c0c88ec42e44f8d9a",
+    "semantic_hash": "75abe97fdca1ea0c0c88ec42e44f8d9a"
+  },
+  "src/Services/StrategyOps.Risk.Api/Features/RescoreRisk/RescoreRisk.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "637bbba8a0063a85eab5313bb3512d49",
+    "semantic_hash": "637bbba8a0063a85eab5313bb3512d49"
+  },
+  "src/Services/StrategyOps.Risk.Api/Infrastructure/Migrations/20260831012519_InitialRiskSchema.Designer.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "f2e031f50c351e6b2d5fa42e869627a0",
+    "semantic_hash": "f2e031f50c351e6b2d5fa42e869627a0"
+  },
+  "src/Services/StrategyOps.Risk.Api/Infrastructure/Migrations/20260831012519_InitialRiskSchema.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "7f61d1b4686dfccae79043b0fce75d04",
+    "semantic_hash": "7f61d1b4686dfccae79043b0fce75d04"
+  },
+  "src/Services/StrategyOps.Risk.Api/Infrastructure/Migrations/RiskDbContextModelSnapshot.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "777712c5c25c4e188a2e441727599bf8",
+    "semantic_hash": "777712c5c25c4e188a2e441727599bf8"
+  },
+  "src/Services/StrategyOps.Risk.Api/Infrastructure/RiskDbContext.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "4a784ae994f5db4ce81ae266a7da099d",
+    "semantic_hash": "4a784ae994f5db4ce81ae266a7da099d"
+  },
+  "src/Services/StrategyOps.Risk.Api/Infrastructure/RiskRegisterLookup.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "77f3e01f23efa706bc2d4a8dc239bbc3",
+    "semantic_hash": "77f3e01f23efa706bc2d4a8dc239bbc3"
+  },
+  "src/Services/StrategyOps.Risk.Api/Program.cs": {
+    "mtime": 1788406923.3355162,
+    "ast_hash": "3c8dfc270fc057b3fb45bf72df270353",
+    "semantic_hash": "3c8dfc270fc057b3fb45bf72df270353"
+  },
+  "src/Services/StrategyOps.Risk.Api/Properties/launchSettings.json": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "cc11f416205dc1886ee304fb149bafcc",
+    "semantic_hash": "cc11f416205dc1886ee304fb149bafcc"
+  },
+  "src/Services/StrategyOps.Risk.Api/RiskApiEntryPoint.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "420611d3a15c568c26c3080f640fed4b",
+    "semantic_hash": "420611d3a15c568c26c3080f640fed4b"
+  },
+  "src/Services/StrategyOps.Risk.Api/StrategyOps.Risk.Api.csproj": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "9f552c37ec129098c990654181c75177",
+    "semantic_hash": "9f552c37ec129098c990654181c75177"
+  },
+  "src/Services/StrategyOps.Risk.Api/appsettings.Development.json": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "804b473502a4c415cf75db61c56c32aa",
+    "semantic_hash": "804b473502a4c415cf75db61c56c32aa"
+  },
+  "src/Services/StrategyOps.Risk.Api/appsettings.json": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "85659a7b807e10383bdaec6ee1aff841",
+    "semantic_hash": "85659a7b807e10383bdaec6ee1aff841"
+  },
+  "tests/StrategyOps.Contract.Tests/EventContractTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "0033a21ea5ba61a6bdd32b1e7aa3d44e",
+    "semantic_hash": "0033a21ea5ba61a6bdd32b1e7aa3d44e"
+  },
+  "tests/StrategyOps.Contract.Tests/GlobalUsings.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "5a6674b5690f598af47ff55d055e5524",
+    "semantic_hash": "5a6674b5690f598af47ff55d055e5524"
+  },
+  "tests/StrategyOps.Contract.Tests/StrategyOps.Contract.Tests.csproj": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "cc0bb89a80ff9b547c6e74efaab43c2d",
+    "semantic_hash": "cc0bb89a80ff9b547c6e74efaab43c2d"
+  },
+  "tests/StrategyOps.Domain.Tests/Benefits/BenefitProfileTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "ccb057a9051464d674b9a3f2be4991d8",
+    "semantic_hash": "ccb057a9051464d674b9a3f2be4991d8"
+  },
+  "tests/StrategyOps.Domain.Tests/GlobalUsings.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "5a6674b5690f598af47ff55d055e5524",
+    "semantic_hash": "5a6674b5690f598af47ff55d055e5524"
+  },
+  "tests/StrategyOps.Domain.Tests/Issues/IssueTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "8537f9bfd4788d3463615036f7ac77ea",
+    "semantic_hash": "8537f9bfd4788d3463615036f7ac77ea"
+  },
+  "tests/StrategyOps.Domain.Tests/Kpis/KpiDefinitionTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "7362a66baed8328c4a28d361147ba872",
+    "semantic_hash": "7362a66baed8328c4a28d361147ba872"
+  },
+  "tests/StrategyOps.Domain.Tests/Projects/ProjectTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "05f076acd679643e3062b2cc1e9856ae",
+    "semantic_hash": "05f076acd679643e3062b2cc1e9856ae"
+  },
+  "tests/StrategyOps.Domain.Tests/Projects/StrategicObjectiveTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "cc6154fe58e7aacf2dda8256ebb5d1bc",
+    "semantic_hash": "cc6154fe58e7aacf2dda8256ebb5d1bc"
+  },
+  "tests/StrategyOps.Domain.Tests/Risks/RiskTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "18c4fe24f524287dedfa16870caad02b",
+    "semantic_hash": "18c4fe24f524287dedfa16870caad02b"
+  },
+  "tests/StrategyOps.Domain.Tests/StrategyOps.Domain.Tests.csproj": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "ba8c323f50488cc5f73bae0a899ca376",
+    "semantic_hash": "ba8c323f50488cc5f73bae0a899ca376"
+  },
+  "tests/StrategyOps.Messaging.Tests/Choreography/RiskEscalationChainTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "f5ac2b0d3111e538687d115de83565b6",
+    "semantic_hash": "f5ac2b0d3111e538687d115de83565b6"
+  },
+  "tests/StrategyOps.Messaging.Tests/Choreography/RiskServiceConsumerTests.cs": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "1e2305f8fd759b0c6b146d7b0714aaf5",
+    "semantic_hash": "1e2305f8fd759b0c6b146d7b0714aaf5"
+  },
+  "tests/StrategyOps.Messaging.Tests/ConsumerHost.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "a922c32417be2ab2d85c95c18878c769",
+    "semantic_hash": "a922c32417be2ab2d85c95c18878c769"
+  },
+  "tests/StrategyOps.Messaging.Tests/Eventually.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "8ccf8e6f44727995066abb3f2cf0a60f",
+    "semantic_hash": "8ccf8e6f44727995066abb3f2cf0a60f"
+  },
+  "tests/StrategyOps.Messaging.Tests/GlobalUsings.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "5a6674b5690f598af47ff55d055e5524",
+    "semantic_hash": "5a6674b5690f598af47ff55d055e5524"
+  },
+  "tests/StrategyOps.Messaging.Tests/Participants/SagaParticipantTests.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "e8fc8d3aeedd08114064e2ff78c20d61",
+    "semantic_hash": "e8fc8d3aeedd08114064e2ff78c20d61"
+  },
+  "tests/StrategyOps.Messaging.Tests/Reporting/PortfolioProjectionTests.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "b5f956db98ca63dac4b59f80b394719a",
+    "semantic_hash": "b5f956db98ca63dac4b59f80b394719a"
+  },
+  "tests/StrategyOps.Messaging.Tests/Reporting/ReportingHost.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "e30cd623a7c7760a1212144eb83684a4",
+    "semantic_hash": "e30cd623a7c7760a1212144eb83684a4"
+  },
+  "tests/StrategyOps.Messaging.Tests/Saga/ProjectInitiationSagaTests.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "8168cf7ad5218c9d91c2f6f93459416d",
+    "semantic_hash": "8168cf7ad5218c9d91c2f6f93459416d"
+  },
+  "tests/StrategyOps.Messaging.Tests/Saga/SagaHost.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "430ca22af68bacf0f17fd93e1a2bae63",
+    "semantic_hash": "430ca22af68bacf0f17fd93e1a2bae63"
+  },
+  "tests/StrategyOps.Messaging.Tests/StrategyOps.Messaging.Tests.csproj": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "3294bbe7929b3b2ce72a222d78aba310",
+    "semantic_hash": "3294bbe7929b3b2ce72a222d78aba310"
+  },
+  "tests/StrategyOps.Slice.Tests/GlobalUsings.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "5a6674b5690f598af47ff55d055e5524",
+    "semantic_hash": "5a6674b5690f598af47ff55d055e5524"
+  },
+  "tests/StrategyOps.Slice.Tests/IssuesApiFactory.cs": {
+    "mtime": 1788406923.3534071,
+    "ast_hash": "094bb244385241dfd3049c29f55b3614",
+    "semantic_hash": "094bb244385241dfd3049c29f55b3614"
+  },
+  "tests/StrategyOps.Slice.Tests/Issues/IssueQueryTests.cs": {
+    "mtime": 1788406923.3433895,
+    "ast_hash": "c8f17e48219f5bdde1e43bacda482ba8",
+    "semantic_hash": "c8f17e48219f5bdde1e43bacda482ba8"
+  },
+  "tests/StrategyOps.Slice.Tests/ProjectsApiFactory.cs": {
+    "mtime": 1788406923.3544261,
+    "ast_hash": "1091668e8afaa12db51def05120350da",
+    "semantic_hash": "1091668e8afaa12db51def05120350da"
+  },
+  "tests/StrategyOps.Slice.Tests/Projects/ProjectLifecycleTests.cs": {
+    "mtime": 1788406923.3544261,
+    "ast_hash": "3e2b725350e6ad9c7d568f5f9bb020ec",
+    "semantic_hash": "3e2b725350e6ad9c7d568f5f9bb020ec"
+  },
+  "tests/StrategyOps.Slice.Tests/Security/AuthorizationTests.cs": {
+    "mtime": 1788406923.355441,
+    "ast_hash": "0528aae078c9c4d8d8031fd0a5260295",
+    "semantic_hash": "0528aae078c9c4d8d8031fd0a5260295"
+  },
+  "tests/StrategyOps.Slice.Tests/StrategyOps.Slice.Tests.csproj": {
+    "mtime": 1788406923.3571844,
+    "ast_hash": "f032c32af584475aa81ea5a1c503cc5c",
+    "semantic_hash": "f032c32af584475aa81ea5a1c503cc5c"
+  },
+  "tests/StrategyOps.Slice.Tests/TestCollections.cs": {
+    "mtime": 1788406923.3571844,
+    "ast_hash": "de78570c35aaf3a685a80f78cc15fa0b",
+    "semantic_hash": "de78570c35aaf3a685a80f78cc15fa0b"
+  },
+  "tests/StrategyOps.Slice.Tests/TestTokens.cs": {
+    "mtime": 1788406923.3571844,
+    "ast_hash": "af8fb8a9bcec21d0df91fc4d0387b4aa",
+    "semantic_hash": "af8fb8a9bcec21d0df91fc4d0387b4aa"
+  },
+  ".serena/project.local.yml": {
+    "mtime": 1788407051.3943384,
+    "ast_hash": "80d87878a5dcaa57ac055afdac265ad1",
+    "semantic_hash": "80d87878a5dcaa57ac055afdac265ad1"
+  },
+  ".serena/project.yml": {
+    "mtime": 1788407051.840027,
+    "ast_hash": "4b536bc418b074aa135cd1f0430badbc",
+    "semantic_hash": "4b536bc418b074aa135cd1f0430badbc"
+  },
+  "README.md": {
+    "mtime": 1788406923.1709516,
+    "ast_hash": "c1c16b19a59a58fe0973e5985242ab18",
+    "semantic_hash": "c1c16b19a59a58fe0973e5985242ab18"
+  },
+  "deploy/docker-compose.yml": {
+    "mtime": 1788406923.171951,
+    "ast_hash": "55839878f8e7dec5b40157fc72724e84",
+    "semantic_hash": "55839878f8e7dec5b40157fc72724e84"
+  },
+  "deploy/k8s/strategyops.yaml": {
+    "mtime": 1788406923.1729507,
+    "ast_hash": "43c7d413b98a08318d9012d858f6ef81",
+    "semantic_hash": "43c7d413b98a08318d9012d858f6ef81"
+  },
+  "docs/00-plan.md": {
+    "mtime": 1788406923.1739504,
+    "ast_hash": "7f5bbdec854fe154251ea053fd31d562",
+    "semantic_hash": "7f5bbdec854fe154251ea053fd31d562"
+  },
+  "docs/00-start-here.md": {
+    "mtime": 1788406923.1739504,
+    "ast_hash": "de7f87f3299880b2d7560ec6faf502be",
+    "semantic_hash": "de7f87f3299880b2d7560ec6faf502be"
+  },
+  "docs/adr/0001-tooling-choices.md": {
+    "mtime": 1788406923.1739504,
+    "ast_hash": "0b174e20fcbbea28d6a85e2c19d0dfe9",
+    "semantic_hash": "0b174e20fcbbea28d6a85e2c19d0dfe9"
+  },
+  "docs/adr/0002-vertical-slices.md": {
+    "mtime": 1788406923.1739504,
+    "ast_hash": "7a933b08e7b7c89c84b1e3b87a058b5a",
+    "semantic_hash": "7a933b08e7b7c89c84b1e3b87a058b5a"
+  },
+  "docs/adr/0003-transactional-outbox.md": {
+    "mtime": 1788406923.1739504,
+    "ast_hash": "0fd7d54624ef7438244ca0a462e6f7ef",
+    "semantic_hash": "0fd7d54624ef7438244ca0a462e6f7ef"
+  },
+  "docs/adr/0004-idempotent-consumers.md": {
+    "mtime": 1788406923.1749492,
+    "ast_hash": "364987143b879ded7e11a6e1bc54e5f6",
+    "semantic_hash": "364987143b879ded7e11a6e1bc54e5f6"
+  },
+  "docs/adr/0005-saga-orchestration-and-choreography.md": {
+    "mtime": 1788406923.1749492,
+    "ast_hash": "dff71a48db0007a94b80bf289f551324",
+    "semantic_hash": "dff71a48db0007a94b80bf289f551324"
+  },
+  "docs/adr/0006-cqrs-read-model.md": {
+    "mtime": 1788406923.1749492,
+    "ast_hash": "dffe73a23462943e4ea023bb457d9644",
+    "semantic_hash": "dffe73a23462943e4ea023bb457d9644"
+  },
+  "docs/adr/0007-edge-and-identity.md": {
+    "mtime": 1788406923.1749492,
+    "ast_hash": "e4c3e8496eef36225d4a6943ce00dd54",
+    "semantic_hash": "e4c3e8496eef36225d4a6943ce00dd54"
+  },
+  "docs/adr/0008-resilience.md": {
+    "mtime": 1788406923.17595,
+    "ast_hash": "a2ede93b2d33628b97aede3f7625acf7",
+    "semantic_hash": "a2ede93b2d33628b97aede3f7625acf7"
+  },
+  "docs/adr/0009-observability.md": {
+    "mtime": 1788406923.17595,
+    "ast_hash": "1f23b61187e605c12377bf39b3de0a27",
+    "semantic_hash": "1f23b61187e605c12377bf39b3de0a27"
+  },
+  "docs/architecture.md": {
+    "mtime": 1788406923.17595,
+    "ast_hash": "0cc8d96bbf464d1bdfeb44155edc34e5",
+    "semantic_hash": "0cc8d96bbf464d1bdfeb44155edc34e5"
+  },
+  "docs/demo-script.md": {
+    "mtime": 1788406923.1772513,
+    "ast_hash": "89137976d9208477960fdde76daa3e59",
+    "semantic_hash": "89137976d9208477960fdde76daa3e59"
+  },
+  "docs/questions/01-what-are-microservices.md": {
+    "mtime": 1788406923.1782565,
+    "ast_hash": "9aa704ee4c31e29f632d3e59d516c8be",
+    "semantic_hash": "9aa704ee4c31e29f632d3e59d516c8be"
+  },
+  "docs/questions/02-monolith-vs-microservices.md": {
+    "mtime": 1788406923.1782565,
+    "ast_hash": "f30311b8624f18c31b0e5676ebdaf461",
+    "semantic_hash": "f30311b8624f18c31b0e5676ebdaf461"
+  },
+  "docs/questions/03-how-do-microservices-communicate.md": {
+    "mtime": 1788406923.1792545,
+    "ast_hash": "25fb88fe8efd9157eef33a9137b67a01",
+    "semantic_hash": "25fb88fe8efd9157eef33a9137b67a01"
+  },
+  "docs/questions/04-sync-vs-async.md": {
+    "mtime": 1788406923.1792545,
+    "ast_hash": "46dd638eaf1a21a33552d2a371049a58",
+    "semantic_hash": "46dd638eaf1a21a33552d2a371049a58"
+  },
+  "docs/questions/05-rest-vs-message-queue.md": {
+    "mtime": 1788406923.180256,
+    "ast_hash": "62a3504dde43fd3476337ced571dfbf9",
+    "semantic_hash": "62a3504dde43fd3476337ced571dfbf9"
+  },
+  "docs/questions/06-advantages-and-challenges.md": {
+    "mtime": 1788406923.1808455,
+    "ast_hash": "c366467331b611a780d454f33fc9bbde",
+    "semantic_hash": "c366467331b611a780d454f33fc9bbde"
+  },
+  "docs/questions/07-service-boundaries.md": {
+    "mtime": 1788406923.1808455,
+    "ast_hash": "d09e574e94574388982ba2e776570d48",
+    "semantic_hash": "d09e574e94574388982ba2e776570d48"
+  },
+  "docs/questions/08-ddd.md": {
+    "mtime": 1788406923.1808455,
+    "ast_hash": "d42c0cc40c4a876f2ed86baa696f3a04",
+    "semantic_hash": "d42c0cc40c4a876f2ed86baa696f3a04"
+  },
+  "docs/questions/09-bounded-context.md": {
+    "mtime": 1788406923.1818445,
+    "ast_hash": "e86e5e8cd4bbf930bb83952776d7cdf1",
+    "semantic_hash": "e86e5e8cd4bbf930bb83952776d7cdf1"
+  },
+  "docs/questions/10-api-gateway.md": {
+    "mtime": 1788406923.1829374,
+    "ast_hash": "11241ab88bd65a1a6c7c0ff784be9f04",
+    "semantic_hash": "11241ab88bd65a1a6c7c0ff784be9f04"
+  },
+  "docs/questions/11-service-discovery.md": {
+    "mtime": 1788406923.1829374,
+    "ast_hash": "801b89caa2a77b93be3b2253414df7f8",
+    "semantic_hash": "801b89caa2a77b93be3b2253414df7f8"
+  },
+  "docs/questions/12-distributed-transactions.md": {
+    "mtime": 1788406923.1842215,
+    "ast_hash": "f104d1058e43102bf43c8651194801cf",
+    "semantic_hash": "f104d1058e43102bf43c8651194801cf"
+  },
+  "docs/questions/13-saga-pattern.md": {
+    "mtime": 1788406923.1849031,
+    "ast_hash": "c8e472de8541a7032f326047c786deda",
+    "semantic_hash": "c8e472de8541a7032f326047c786deda"
+  },
+  "docs/questions/14-orchestration-vs-choreography.md": {
+    "mtime": 1788406923.1849031,
+    "ast_hash": "c2996d16ba70e64822a1c81b9adf0b67",
+    "semantic_hash": "c2996d16ba70e64822a1c81b9adf0b67"
+  },
+  "docs/questions/15-cqrs.md": {
+    "mtime": 1788406923.186043,
+    "ast_hash": "691945c1c21a4778460b229d8f5d6619",
+    "semantic_hash": "691945c1c21a4778460b229d8f5d6619"
+  },
+  "docs/questions/16-eventual-consistency.md": {
+    "mtime": 1788406923.1864896,
+    "ast_hash": "00d63716226c1081903814fb76a68041",
+    "semantic_hash": "00d63716226c1081903814fb76a68041"
+  },
+  "docs/questions/17-fault-tolerance.md": {
+    "mtime": 1788406923.1875632,
+    "ast_hash": "f58589dd52c5c7f663b50ef82b2b77d3",
+    "semantic_hash": "f58589dd52c5c7f663b50ef82b2b77d3"
+  },
+  "docs/questions/18-retry-and-circuit-breaker.md": {
+    "mtime": 1788406923.1875632,
+    "ast_hash": "d2ccb9c4cae18da86e61df8253d30d60",
+    "semantic_hash": "d2ccb9c4cae18da86e61df8253d30d60"
+  },
+  "docs/questions/19-idempotency.md": {
+    "mtime": 1788406923.1885598,
+    "ast_hash": "65ba0127b45c7e95e53844935709edc4",
+    "semantic_hash": "65ba0127b45c7e95e53844935709edc4"
+  },
+  "docs/questions/20-security-jwt-oauth.md": {
+    "mtime": 1788406923.190554,
+    "ast_hash": "5cbe7d0a82c65ebaeb1199a8f02a0488",
+    "semantic_hash": "5cbe7d0a82c65ebaeb1199a8f02a0488"
+  },
+  "docs/questions/21-deployment.md": {
+    "mtime": 1788406923.1912594,
+    "ast_hash": "6d1bccebbc9df1acb0d0bcc39338efab",
+    "semantic_hash": "6d1bccebbc9df1acb0d0bcc39338efab"
+  },
+  "docs/questions/22-docker-and-kubernetes.md": {
+    "mtime": 1788406923.1916864,
+    "ast_hash": "79870aa6524afdb0d5d36f9de59b187d",
+    "semantic_hash": "79870aa6524afdb0d5d36f9de59b187d"
+  },
+  "docs/questions/23-logging-and-monitoring.md": {
+    "mtime": 1788406923.1947796,
+    "ast_hash": "307a44ae1a1462d65f6bf4e86b671c25",
+    "semantic_hash": "307a44ae1a1462d65f6bf4e86b671c25"
+  },
+  "docs/questions/24-monolith-migration.md": {
+    "mtime": 1788406923.1957767,
+    "ast_hash": "6656f04cefa0133af539d552df3ce280",
+    "semantic_hash": "6656f04cefa0133af539d552df3ce280"
+  },
+  "docs/questions/25-challenges-faced.md": {
+    "mtime": 1788406923.1987793,
+    "ast_hash": "7c462a85843b319b40a9ba7de216d165",
+    "semantic_hash": "7c462a85843b319b40a9ba7de216d165"
+  },
+  "docs/testing.md": {
+    "mtime": 1788406923.2004764,
+    "ast_hash": "7327a9dab36624ccdaedc4f14d7f8615",
+    "semantic_hash": "7327a9dab36624ccdaedc4f14d7f8615"
+  },
+  "src/Services/StrategyOps.Reporting.Api/wwwroot/index.html": {
+    "mtime": 1788406923.3303523,
+    "ast_hash": "75d628d5358a30f001442778bd51519f",
+    "semantic_hash": "75d628d5358a30f001442778bd51519f"
+  },
+  "tests/StrategyOps.Contract.Tests/Snapshots/event-contracts.txt": {
+    "mtime": 1788406923.3383925,
+    "ast_hash": "dec69f7fb2da024b34105388b232eca5",
+    "semantic_hash": "dec69f7fb2da024b34105388b232eca5"
+  }
+}
