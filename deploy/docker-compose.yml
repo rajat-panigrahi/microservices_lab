@@ -1,0 +1,212 @@
+# StrategyOps, all nine services plus their infrastructure.
+#
+#   docker compose -f deploy/docker-compose.yml up
+#
+# Build the images first with deploy/build-images.sh.
+#
+# NOTE: this file has NOT been executed - the environment it was written in has
+# no Docker daemon. Treat it as reviewed-by-eye, and expect to fix something on
+# first run. Everything else in this repository was verified running.
+#
+# The three differences from the local `dotnet run` setup are the interesting
+# ones, and they are what containerisation actually changes:
+#   1. PostgreSQL replaces per-service SQLite files - but still ONE DATABASE PER
+#      SERVICE, created separately below. Sharing a database would undo the
+#      whole architecture, and a shared server with separate databases is the
+#      normal production compromise.
+#   2. Services address each other by CONTAINER NAME. Compose runs a DNS server,
+#      so "projects-api" resolves - which is why service discovery is optional
+#      here and why Kubernetes replaces the registry entirely.
+#   3. depends_on with a HEALTH condition, not just start order: RabbitMQ
+#      accepts TCP connections seconds before it accepts AMQP ones.
+
+name: strategyops
+
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  networks: [strategyops]
+  environment: &common-env
+    ASPNETCORE_ENVIRONMENT: Production
+    ASPNETCORE_URLS: http://+:8080
+    RabbitMq__Host: rabbitmq
+    RabbitMq__Username: strategyops
+    RabbitMq__Password: strategyops-dev-password
+    Jwt__Issuer: https://strategyops.local/identity
+    Jwt__Audience: strategyops-api
+    Jwt__SigningKey: ${JWT_SIGNING_KEY:-development-only-signing-key-change-me-in-any-real-environment}
+    Discovery__Enabled: "false"
+    Observability__OtlpEndpoint: http://jaeger:4317
+    Observability__SeqUrl: http://seq:5341
+  depends_on:
+    rabbitmq: { condition: service_healthy }
+    postgres: { condition: service_healthy }
+
+services:
+  # --- infrastructure -------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: strategyops-rabbitmq
+    hostname: rabbitmq
+    networks: [strategyops]
+    ports:
+      - "5672:5672"
+      - "15672:15672"   # management UI: watch queues fill and drain
+    environment:
+      RABBITMQ_DEFAULT_USER: strategyops
+      RABBITMQ_DEFAULT_PASS: strategyops-dev-password
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: strategyops-postgres
+    hostname: postgres
+    networks: [strategyops]
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_USER: strategyops
+      POSTGRES_PASSWORD: strategyops-dev-password
+      POSTGRES_DB: postgres
+    volumes:
+      # Creates one database per service. Same server, separate databases: the
+      # usual production compromise between operational cost and isolation.
+      - ./docker/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql:ro
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strategyops"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  seq:
+    image: datalust/seq:latest
+    container_name: strategyops-seq
+    networks: [strategyops]
+    ports: ["5341:80"]
+    environment:
+      ACCEPT_EULA: "Y"
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: strategyops-jaeger
+    networks: [strategyops]
+    ports:
+      - "16686:16686"   # trace UI: one request across every service
+      - "4317:4317"
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+
+  # --- platform services ----------------------------------------------------
+  discovery:
+    <<: *service-defaults
+    image: strategyops/discovery:${TAG:-local}
+    container_name: strategyops-discovery
+    hostname: discovery-api
+    ports: ["5108:8080"]
+    depends_on: {}
+
+  identity:
+    <<: *service-defaults
+    image: strategyops/identity:${TAG:-local}
+    container_name: strategyops-identity
+    hostname: identity-api
+    ports: ["5107:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Identity: Host=postgres;Database=strategyops_identity;Username=strategyops;Password=strategyops-dev-password
+      Identity__SeedPassword: ${SEED_PASSWORD:-Passw0rd!}
+
+  projects:
+    <<: *service-defaults
+    image: strategyops/projects:${TAG:-local}
+    container_name: strategyops-projects
+    hostname: projects-api
+    ports: ["5101:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Projects: Host=postgres;Database=strategyops_projects;Username=strategyops;Password=strategyops-dev-password
+
+  kpi:
+    <<: *service-defaults
+    image: strategyops/kpi:${TAG:-local}
+    container_name: strategyops-kpi
+    hostname: kpi-api
+    ports: ["5102:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Kpi: Host=postgres;Database=strategyops_kpi;Username=strategyops;Password=strategyops-dev-password
+
+  risk:
+    <<: *service-defaults
+    image: strategyops/risk:${TAG:-local}
+    container_name: strategyops-risk
+    hostname: risk-api
+    ports: ["5103:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Risk: Host=postgres;Database=strategyops_risk;Username=strategyops;Password=strategyops-dev-password
+
+  issues:
+    <<: *service-defaults
+    image: strategyops/issues:${TAG:-local}
+    container_name: strategyops-issues
+    hostname: issues-api
+    ports: ["5104:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Issues: Host=postgres;Database=strategyops_issues;Username=strategyops;Password=strategyops-dev-password
+
+  benefits:
+    <<: *service-defaults
+    image: strategyops/benefits:${TAG:-local}
+    container_name: strategyops-benefits
+    hostname: benefits-api
+    ports: ["5105:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Benefits: Host=postgres;Database=strategyops_benefits;Username=strategyops;Password=strategyops-dev-password
+
+  reporting:
+    <<: *service-defaults
+    image: strategyops/reporting:${TAG:-local}
+    container_name: strategyops-reporting
+    hostname: reporting-api
+    ports: ["5106:8080"]
+    environment:
+      <<: *common-env
+      ConnectionStrings__Reporting: Host=postgres;Database=strategyops_reporting;Username=strategyops;Password=strategyops-dev-password
+      Upstream__Projects: http://projects-api:8080
+      Upstream__Kpi: http://kpi-api:8080
+      Upstream__Risk: http://risk-api:8080
+      Upstream__Issues: http://issues-api:8080
+      Upstream__Benefits: http://benefits-api:8080
+
+  # --- edge -----------------------------------------------------------------
+  gateway:
+    <<: *service-defaults
+    image: strategyops/gateway:${TAG:-local}
+    container_name: strategyops-gateway
+    hostname: gateway
+    ports: ["5100:8080"]
+    environment:
+      <<: *common-env
+      # Container names, resolved by Compose's DNS. This is why the service
+      # registry is switched off here - the platform already does it.
+      ReverseProxy__Clusters__identity__Destinations__d1__Address: http://identity-api:8080/
+      ReverseProxy__Clusters__projects__Destinations__d1__Address: http://projects-api:8080/
+      ReverseProxy__Clusters__kpi__Destinations__d1__Address: http://kpi-api:8080/
+      ReverseProxy__Clusters__risk__Destinations__d1__Address: http://risk-api:8080/
+      ReverseProxy__Clusters__issues__Destinations__d1__Address: http://issues-api:8080/
+      ReverseProxy__Clusters__benefits__Destinations__d1__Address: http://benefits-api:8080/
+      ReverseProxy__Clusters__reporting__Destinations__d1__Address: http://reporting-api:8080/
+
+networks:
+  strategyops:
+    driver: bridge
+
+volumes:
+  postgres-data:
