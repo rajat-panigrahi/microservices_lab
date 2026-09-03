@@ -117,7 +117,7 @@ docs/    00-plan.md          this plan, committed first
          architecture.md     context map + mermaid diagrams
          testing.md          TDD rhythm, pyramid, contract tests
          demo-script.md      copy-pasteable curl walkthrough
-         adr/                0001..0006 decision records
+         adr/                0001..0009 decision records
          questions/          01-*.md .. 25-*.md
 README.md                    front door: what, how to run, what's verified
 ```
@@ -170,7 +170,7 @@ The 25 docs each carry a 60-second spoken answer, a whiteboard sketch, follow-up
 | 1, 2 | `docs/architecture.md`, `src/Monolith/` vs `src/Services/` side by side |
 | 3, 4, 5 | Gateway typed `HttpClient` (sync reads) vs MassTransit publish (async state change); decision table in `docs/questions/05-*.md` |
 | 6, 25 | `docs/questions/06-*.md`, `25-*.md` — tied to specific commits where the pain showed up |
-| 7, 8, 9 | `docs/adr/0002-service-boundaries.md`, context map, why Risk and Issues are separate contexts, and how a vertical slice becomes an extraction seam |
+| 7, 8, 9 | `docs/adr/0002-vertical-slices.md`, context map, why Risk and Issues are separate contexts, and how a vertical slice becomes an extraction seam |
 | 10 | `src/Gateway/` — routes, edge JWT, `/api/portfolio/{id}/overview` fan-out |
 | 11 | `Discovery.Api/`, `BuildingBlocks/Discovery/DiscoveryHttpMessageHandler.cs`; docs map it to Consul / Eureka / K8s DNS |
 | 12, 13, 14 | `Projects.Api/Features/Sagas/ProjectInitiationSaga.cs` + compensation consumers; choreography chain in Risk/Issues/Benefits |
@@ -182,7 +182,7 @@ The 25 docs each carry a 60-second spoken answer, a whiteboard sketch, follow-up
 | 21, 22 | `deploy/docker/`, `deploy/docker-compose.yml`, `deploy/k8s/` |
 | 23 | `BuildingBlocks/Observability/`, `BuildingBlocks/Correlation/` |
 | 24 | `src/Monolith/` + `docs/questions/24-*.md` strangler-fig walkthrough naming which seam is cut first and why |
-| bonus | `docs/testing.md` (TDD, pyramid, contract tests), `docs/adr/0006-no-mediatr.md`, SOLID call-outs |
+| bonus | `docs/testing.md` (TDD, pyramid, contract tests), `docs/adr/0001-tooling-choices.md` (the no-MediatR call), SOLID call-outs |
 
 ---
 
@@ -205,3 +205,102 @@ Runnable and checkable **in this session**:
 **Cannot be verified here — will be labelled as such in the README:** Docker image builds, `docker compose up`, and the Kubernetes manifests (no Docker daemon in this environment). They'll be written carefully and reviewed by eye, but expect to run them first on your own machine.
 
 All work — code *and* every document, this plan included — goes on `claude/microservices-interview-prep-h7l5en`, committed per phase and pushed with `git push -u origin` as each phase completes. No PR unless you ask.
+
+---
+
+## What actually happened
+
+*Added after the build finished. Everything above this line is the plan as written on day
+one, left untouched — its value is that it is what was decided **before** the code existed.
+This section is the record of what that plan met when it hit a compiler.*
+
+### The phases, as they landed
+
+One commit each, in order — `git log --oneline` is the reading order.
+
+| # | Commit | Outcome |
+|---|---|---|
+| 0 | `797ef43` | plan committed before any code, as promised |
+| 1 | `d86312c` | contracts, building blocks, Projects service — as planned |
+| 2 | `63e0f32` | Risk + Issues, RabbitMQ, inbox idempotency, the choreographed chain |
+| 3 | `3f7fcc1` | KPI + Benefits, and the initiation saga with compensation and a 30s timeout |
+| 4 | `5ab5e39` | Reporting read model, 17 projections, `/reporting/rebuild`, live dashboard |
+| 5 | `946eeac` | Identity, Discovery, YARP gateway, Polly, rate limiting |
+| 6 | `2deb3ca` | correlation through HTTP *and* the broker, Serilog, OpenTelemetry, contract tests |
+| 7 | `f20c8de`, `0684c55` | monolith, deployment artifacts, 25 question docs, architecture, README |
+| — | `c8e0b8c` | final end-to-end verification, and the seventh bug it found |
+
+Final shape: **9 services + gateway + monolith**, 206 C# files, **176 tests** (91 domain,
+30 slice, 50 messaging, 5 contract) green in about **11 seconds with no infrastructure
+running** — no RabbitMQ, no PostgreSQL, no Docker. That last property was a deliberate goal
+and it survived contact with the saga, which is the part most likely to have forced a
+container dependency.
+
+### Where the plan was wrong
+
+**The ADR numbering.** The plan promised `docs/adr/0006-no-mediatr.md` and
+`docs/adr/0002-service-boundaries.md`. Neither exists. The ADRs ended up numbered by
+*decision* rather than by phase, `0001`–`0009`: the no-MediatR reasoning lives in
+[`0001-tooling-choices.md`](adr/0001-tooling-choices.md) alongside the other library calls it
+belongs with, and boundaries are argued in
+[`0002-vertical-slices.md`](adr/0002-vertical-slices.md) and the context map in
+[`architecture.md`](architecture.md). The question→code map above has been corrected in place;
+this note explains why the numbers moved.
+
+**"NuGet reachable, everything restores fine"** was true and beside the point. Two packages
+had to be *held back* for licensing rather than version reasons: **MassTransit stays on 8.x**
+because v9 went commercial, and **Shouldly replaced FluentAssertions** because its 8.x needs a
+paid licence for commercial use. A third, `HealthChecks.EntityFrameworkCore`, had to be pinned
+to 8.0.30 because 9.0.19 is not `net8.0`-compatible. The lesson worth carrying: in .NET right
+now, "does it restore?" and "may I ship it?" are separate questions.
+
+**Six bugs became seven.** The plan's status snapshot listed six bugs found by running the
+system. The final verification found a seventh — and it was the *same* bug as one already
+fixed, in a second place nobody had looked: `POST /reporting/rebuild` called five secured
+services without relaying the caller's token, so it returned 503 claiming Projects was
+unreachable when Projects was healthy and simply saying 401. The gateway had been fixed for
+exactly this days earlier. All seven are written up in
+[`questions/25-challenges-faced.md`](questions/25-challenges-faced.md); the real lesson from
+the seventh is that fixing a cross-cutting concern means asking *which other outbound clients
+exist*, not just fixing the caller in front of you.
+
+### Verified by running it, not by asserting it
+
+Confirmed live in the final run, with all nine services up:
+
+- **auth** — 401 anonymous, 403 for a Viewer, 200 for a director;
+- **the happy saga** — project Active with scorecard, risk register and a £350,000 benefit
+  forecast;
+- **compensation** — a project over the portfolio ceiling landed in `InitiationFailed` in 3s,
+  with all three provisioned legs returning 404 afterwards;
+- **choreography** — Critical risk → issue raised → project Red → benefit AtRisk in 3s, with
+  no coordinator, and the return leg closing the originating risk in 2s;
+- **CQRS repair** — a deliberately corrupted read-model row rebuilt from source services in
+  0.42s;
+- **resilience** — the breaker cut a failing dependency from ~1100ms to ~10ms while KPI stayed
+  healthy, and closed 16s after the dependency healed; rate limiting returned 117×200 and
+  13×429;
+- **correlation** — one id reconstructing an entire request across six processes and the
+  broker.
+
+### What was never executed
+
+The `Dockerfile`, `docker-compose.yml` and the Kubernetes manifests were **written and reviewed
+by eye, and never run** — this build environment has no Docker daemon and no cluster. Both YAML
+files parse (22 documents in the k8s manifest), and that is the entire extent of the guarantee.
+Expect to fix something the first time you run them on a real machine. This is flagged in the
+README and in the files themselves; it is the one place where the repo asks to be trusted
+rather than demonstrating.
+
+### The proof I did not plan
+
+RabbitMQ died twice during the final verification, because the container restarted underneath
+it. The second time produced better evidence for the outbox than any test in the suite: HTTP
+writes kept succeeding while the broker was down, two events sat undelivered in the outbox
+table, and when RabbitMQ came back the saga completed **one second later** with nothing lost
+and nothing duplicated.
+
+That is the whole argument for [ADR 0003](adr/0003-transactional-outbox.md) — that a broker
+outage should cost you latency, not data — and it ran itself by accident. If an interviewer
+asks why the outbox is worth the extra table, this is the answer, and it happened rather than
+being imagined.

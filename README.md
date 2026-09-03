@@ -129,6 +129,7 @@ infrastructure is a test suite that stops being run. See [`docs/testing.md`](doc
 | [`docs/adr/`](docs/adr) | nine decision records, each with its trade-off |
 | [`docs/testing.md`](docs/testing.md) | the four tiers, and why the middle is unusually fat |
 | [`docs/demo-script.md`](docs/demo-script.md) | copy-pasteable walkthrough of every pattern |
+| [`docs/00-plan.md`](docs/00-plan.md) | the design record — what was planned up front, and where it was wrong |
 
 ### The 25 questions
 
