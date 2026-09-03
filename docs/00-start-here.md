@@ -129,9 +129,17 @@ Three things in this system are unusual enough to be worth volunteering:
    choreographed — so you can compare them from experience rather than from a blog post.
 2. **The outbox and inbox**, which most sample projects skip, and which are the actual answer
    to "how do you not lose or double-process a message".
-3. **Six bugs found by running the system rather than by tests** — see
+3. **Seven bugs found by running the system rather than by tests** — see
    [question 25](questions/25-challenges-faced.md). Specific war stories are far more
    convincing than "distributed systems are hard".
+
+## Optional background — how this was built
+
+[`00-plan.md`](00-plan.md) is the design record: the plan written before any code existed,
+with a section at the end recording what it got right, where it was wrong, and what was
+verified by running versus only written. Not part of the ten sessions — read it if you want
+the reasoning behind the shape of the repo, or if an interviewer asks how you'd approach
+building something like this.
 
 ## Being honest about what this is
 
