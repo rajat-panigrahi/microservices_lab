@@ -14,7 +14,7 @@
 > orchestrator is waiting for a confirmation that never comes. The fix is a rule I would now
 > apply everywhere: **every saga participant must always answer, even when it did nothing.**
 
-## Six real ones, with the fix
+## Seven real ones, with the fix
 
 **1. A participant that stayed silent hung the orchestrator.**
 As above. Caught by a messaging test asserting the confirmation, not by reading the code — it
@@ -50,6 +50,23 @@ An instance id was truncated with `[..48]`, which throws if the string is shorte
 threw depended on the service name: `issues-api` is two characters shorter than
 `projects-api`. *Lesson: identical shared code can fail in one service and not its neighbour,
 and that asymmetry is very hard to reason about from a stack trace.*
+
+**7. The same identity bug, twice, in two different places.**
+After securing every endpoint, the gateway's aggregation endpoint called four services
+anonymously and got four 401s. I fixed it with a token-forwarding handler — and then the
+read-model **rebuild** endpoint turned out to have exactly the same bug, found weeks later by
+running it. *Lesson: when you change a cross-cutting concern like authentication, the question
+is not "did I fix the caller I was looking at" but "which other outbound clients exist?" A
+grep for `AddHttpClient` would have found both in seconds.*
+
+## A bug the environment handed me for free
+
+Midway through the final verification run, RabbitMQ died because the container restarted. The
+services stayed healthy, the HTTP writes kept succeeding, and two events sat unpublished in the
+outbox. When the broker came back, **the saga completed one second later** with nothing lost.
+
+I could not have staged a better demonstration of why the outbox exists. Without it, those two
+events would have been published into a dead connection and gone.
 
 ## The structural challenges, beyond individual bugs
 

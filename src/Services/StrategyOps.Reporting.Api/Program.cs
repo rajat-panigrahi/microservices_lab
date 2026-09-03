@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StrategyOps.BuildingBlocks.Api;
 using StrategyOps.BuildingBlocks.Chaos;
 using StrategyOps.BuildingBlocks.Hosting;
+using StrategyOps.BuildingBlocks.Auth;
 using StrategyOps.BuildingBlocks.Correlation;
 using StrategyOps.BuildingBlocks.Messaging;
 using StrategyOps.BuildingBlocks.Time;
@@ -24,7 +25,13 @@ builder.AddStrategyOpsPlatform("reporting-api");
 builder.Services.AddStrategyOpsMessaging<ReportingDbContext>(builder.Configuration, serviceAssembly);
 
 builder.Services.Configure<UpstreamServices>(builder.Configuration.GetSection(UpstreamServices.SectionName));
-builder.Services.AddHttpClient("upstream", client => client.Timeout = TimeSpan.FromSeconds(5));
+// Rebuild reads from the owning services, which are secured - so this client has to carry
+// the caller's identity, exactly as the gateway's aggregation client does. Without it the
+// rebuild endpoint authenticates its own caller and then calls five services anonymously,
+// and every one of them correctly answers 401.
+builder.Services.AddTransient<BearerTokenForwardingHandler>();
+builder.Services.AddHttpClient("upstream", client => client.Timeout = TimeSpan.FromSeconds(5))
+    .AddHttpMessageHandler<BearerTokenForwardingHandler>();
 
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IPortfolioNotifier, SignalRPortfolioNotifier>();

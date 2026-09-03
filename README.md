@@ -75,18 +75,22 @@ Being specific about this is the point of the repo.
 **Verified by running the system**, not just by tests:
 
 - a £250k project initiates in ~3s — scorecard, risk register and benefit profile all created
+- **RabbitMQ died mid-run and nothing was lost**: writes kept succeeding, two events sat in the
+  outbox, and the saga completed **1 second** after the broker came back. That was an accident
+  of the environment, and the best evidence in the repo that the outbox works
 - a £900k project is refused over the portfolio ceiling; the saga rolls the other two legs back
   in 2s, leaving 404s and a recorded reason
 - escalating a Critical risk auto-raises an issue, takes the project Red and flags the benefit
   at risk — with no coordinator; resolving that issue closes the originating risk
-- the read model assembles five services into one row in ~3s; a deliberately corrupted row is
-  repaired by `POST /reporting/rebuild` in 0.5s
+- the read model assembles five services into one row in ~3s; a deliberately corrupted row
+  (issues 99, forecast 1, no KPIs) is repaired by `POST /reporting/rebuild` in 0.42s
 - 401 anonymous, **403** (not 401) for a Viewer, 200 for a director; 401 for an expired token
   and for one signed with the wrong key
 - six services self-registered with the registry; gateway aggregation returned all five
   sections in 479ms
-- the circuit breaker opened after one failure, cutting latency from 1038ms to ~15ms **while
-  KPI stayed healthy**; rate limiting returned 122×200 and 8×429 for 130 rapid calls
+- the circuit breaker opened after one failure, cutting latency from ~1100ms to ~10ms **while
+  KPI stayed healthy**, and closed again 16s after the dependency healed; rate limiting
+  returned 117×200 and 13×429 for 130 rapid calls
 - **one correlation id appeared in all six services' logs**, and a single grep reconstructed
   the whole request in order, across HTTP and RabbitMQ
 
@@ -156,7 +160,7 @@ infrastructure is a test suite that stops being run. See [`docs/testing.md`](doc
 The git history is the intended reading order — each phase is one commit that leaves the system
 runnable.
 
-## Six bugs worth knowing about
+## Seven bugs worth knowing about
 
 Every one was found by **running** the system, not by a unit test. They are written up in
 [question 25](docs/questions/25-challenges-faced.md), and they are better interview material
@@ -170,3 +174,5 @@ than any pattern description:
 4. A correlation id **generated** at the gateway that vanished at the first hop.
 5. SQLite refusing to `ORDER BY` a `DateTimeOffset` — LINQ that compiles and works on SQL Server.
 6. A truncation that threw only for service names two characters shorter than their neighbours.
+7. The read-model **rebuild** endpoint calling five secured services without forwarding the
+   caller's token — the same mistake as (4), in a second place, found only by running it.
