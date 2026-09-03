@@ -1,0 +1,207 @@
+StrategyOps.Contracts.V1.Benefits.BenefitAtRisk
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProfileId: Guid
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Benefits.BenefitProfileRegistered
+    CorrelationId: String
+    ForecastValue: Decimal
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProfileId: Guid
+    ProjectCode: String
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Benefits.BenefitProfileRegistrationFailed
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Benefits.BenefitProfileWithdrawn
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Benefits.BenefitRealised
+    ActualValue: Decimal
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProfileId: Guid
+    ProjectId: Guid
+    RealisationPercent: Decimal
+    RealisedToDate: Decimal
+StrategyOps.Contracts.V1.Issues.IssueAssigned
+    CorrelationId: String
+    IssueId: Guid
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    Owner: String
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Issues.IssueBreachedSla
+    CorrelationId: String
+    IssueId: Guid
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Severity: String
+    TargetResolutionUtc: DateTimeOffset
+StrategyOps.Contracts.V1.Issues.IssueRaised
+    CorrelationId: String
+    IssueId: Guid
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    OriginRiskId: Guid?
+    ProjectId: Guid
+    Severity: String
+    Title: String
+StrategyOps.Contracts.V1.Issues.IssueResolved
+    CorrelationId: String
+    IssueId: Guid
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    OriginRiskId: Guid?
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Kpis.KpiBreached
+    CorrelationId: String
+    KpiId: Guid
+    KpiName: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Rag: String
+    Target: Decimal
+    Value: Decimal
+StrategyOps.Contracts.V1.Kpis.KpiMeasurementRecorded
+    CorrelationId: String
+    KpiId: Guid
+    KpiName: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Rag: String
+    Value: Decimal
+StrategyOps.Contracts.V1.Kpis.KpiRecovered
+    CorrelationId: String
+    KpiId: Guid
+    KpiName: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Kpis.KpiScorecardProvisionFailed
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Kpis.KpiScorecardProvisioned
+    CorrelationId: String
+    KpiCount: Int32
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectCode: String
+    ProjectId: Guid
+    ScorecardId: Guid
+StrategyOps.Contracts.V1.Kpis.KpiScorecardWithdrawn
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Projects.ProjectActivated
+    Code: String
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Projects.ProjectClosed
+    Code: String
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Projects.ProjectDraftCreated
+    Budget: Decimal
+    Code: String
+    CorrelationId: String
+    MessageId: Guid
+    Name: String
+    ObjectiveId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Sponsor: String
+StrategyOps.Contracts.V1.Projects.ProjectHealthChanged
+    Code: String
+    CorrelationId: String
+    Health: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Projects.ProjectInitiationFailed
+    Code: String
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Projects.ProjectInitiationRequested
+    Budget: Decimal
+    Code: String
+    CorrelationId: String
+    MessageId: Guid
+    Name: String
+    ObjectiveId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Risks.RiskClosed
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    RiskId: Guid
+StrategyOps.Contracts.V1.Risks.RiskEscalated
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+    RiskId: Guid
+    Tier: String
+    Title: String
+StrategyOps.Contracts.V1.Risks.RiskRaised
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    RiskId: Guid
+    Score: Int32
+    Tier: String
+    Title: String
+StrategyOps.Contracts.V1.Risks.RiskRegisterProvisionFailed
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    Reason: String
+StrategyOps.Contracts.V1.Risks.RiskRegisterProvisioned
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectCode: String
+    ProjectId: Guid
+    RegisterId: Guid
+StrategyOps.Contracts.V1.Risks.RiskRegisterWithdrawn
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+StrategyOps.Contracts.V1.Risks.RiskRescored
+    CorrelationId: String
+    MessageId: Guid
+    OccurredAtUtc: DateTimeOffset
+    ProjectId: Guid
+    RiskId: Guid
+    Score: Int32
+    Tier: String

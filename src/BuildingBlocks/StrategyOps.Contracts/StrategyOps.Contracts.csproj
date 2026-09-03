@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The ONLY assembly shared between services. Everything in here is a wire
+    contract, so treat every change as a breaking-change conversation:
+    additive-only within a version folder, new folder for a new version.
+  -->
+
+</Project>

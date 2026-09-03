@@ -1,0 +1,678 @@
+# StrategyOps on Kubernetes.
+#
+#   kubectl apply -f deploy/k8s/
+#
+# NOT APPLIED OR VERIFIED - the environment this was written in has no cluster.
+# Reviewed by eye; expect to fix something on first apply.
+#
+# The point of reading this next to docker-compose.yml is what Kubernetes takes
+# over from the application:
+#
+#   * SERVICE DISCOVERY. A Service gives each deployment a stable DNS name and
+#     load-balances across its pods. The Discovery service is not deployed here
+#     at all - the platform does its job, better, with no code.
+#   * HEALTH. Liveness and readiness probes are why the split in the
+#     application matters: a failing LIVENESS probe restarts the pod, a failing
+#     READINESS probe only takes it out of the Service's endpoints. A liveness
+#     probe that checked the database would restart every replica during a
+#     database blip.
+#   * ROLLING DEPLOYS. maxUnavailable: 0 means new pods must become READY before
+#     old ones are removed, so a deploy is invisible to callers - which only
+#     works because readiness is honest about when a pod can serve.
+#   * SECRETS. The signing key stops being a value in a config file.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: strategyops
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: strategyops-config
+  namespace: strategyops
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_URLS: "http://+:8080"
+  RabbitMq__Host: "rabbitmq"
+  Jwt__Issuer: "https://strategyops.local/identity"
+  Jwt__Audience: "strategyops-api"
+  # Off deliberately: a Kubernetes Service already provides stable names and
+  # load balancing. Running our own registry alongside it would be duplicate
+  # machinery with worse failure modes.
+  Discovery__Enabled: "false"
+  Observability__OtlpEndpoint: "http://jaeger-collector:4317"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: strategyops-secrets
+  namespace: strategyops
+type: Opaque
+stringData:
+  # Placeholders. In a real cluster these come from Sealed Secrets, External
+  # Secrets, or the cloud provider's secret store - never from a file in git.
+  Jwt__SigningKey: "REPLACE-ME-with-at-least-32-characters-from-a-secret-store"
+  RabbitMq__Username: "strategyops"
+  RabbitMq__Password: "REPLACE-ME"
+  Postgres__Password: "REPLACE-ME"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projects
+  namespace: strategyops
+  labels: { app: projects }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: projects }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: projects }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: projects
+          image: strategyops/projects:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Projects
+              value: "Host=postgres;Database=strategyops_projects;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: projects-api
+  namespace: strategyops
+spec:
+  selector: { app: projects }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kpi
+  namespace: strategyops
+  labels: { app: kpi }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: kpi }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: kpi }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: kpi
+          image: strategyops/kpi:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Kpi
+              value: "Host=postgres;Database=strategyops_kpi;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kpi-api
+  namespace: strategyops
+spec:
+  selector: { app: kpi }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk
+  namespace: strategyops
+  labels: { app: risk }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: risk }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: risk }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: risk
+          image: strategyops/risk:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Risk
+              value: "Host=postgres;Database=strategyops_risk;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: risk-api
+  namespace: strategyops
+spec:
+  selector: { app: risk }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: issues
+  namespace: strategyops
+  labels: { app: issues }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: issues }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: issues }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: issues
+          image: strategyops/issues:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Issues
+              value: "Host=postgres;Database=strategyops_issues;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: issues-api
+  namespace: strategyops
+spec:
+  selector: { app: issues }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: benefits
+  namespace: strategyops
+  labels: { app: benefits }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: benefits }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: benefits }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: benefits
+          image: strategyops/benefits:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Benefits
+              value: "Host=postgres;Database=strategyops_benefits;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: benefits-api
+  namespace: strategyops
+spec:
+  selector: { app: benefits }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reporting
+  namespace: strategyops
+  labels: { app: reporting }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: reporting }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: reporting }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: reporting
+          image: strategyops/reporting:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Reporting
+              value: "Host=postgres;Database=strategyops_reporting;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reporting-api
+  namespace: strategyops
+spec:
+  selector: { app: reporting }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  namespace: strategyops
+  labels: { app: identity }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: identity }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Never drop below the desired count during a deploy. Combined with an
+      # honest readiness probe, this makes rollouts invisible to callers.
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels: { app: identity }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: identity
+          image: strategyops/identity:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            - name: ConnectionStrings__Identity
+              value: "Host=postgres;Database=strategyops_identity;Username=strategyops;Password=$(Postgres__Password)"
+          # Liveness: is the process wedged? Failure KILLS the pod, so it must
+          # not depend on anything external.
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          # Readiness: can this pod serve right now? Failure only removes it
+          # from the Service, so it MAY check dependencies.
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          # Startup probe buys slow starters time - EF migrations on boot, in
+          # this case - without loosening the liveness probe for the pod's
+          # whole life.
+          startupProbe:
+            httpGet: { path: /health, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-api
+  namespace: strategyops
+spec:
+  selector: { app: identity }
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: strategyops
+  labels: { app: gateway }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: gateway }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
+  template:
+    metadata:
+      labels: { app: gateway }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 64198
+      containers:
+        - name: gateway
+          image: strategyops/gateway:local
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: strategyops-config }
+            - secretRef: { name: strategyops-secrets }
+          env:
+            # Kubernetes Service DNS. This is the registry's job, done by the
+            # platform: "projects-api" resolves and load-balances across pods.
+            - { name: ReverseProxy__Clusters__projects__Destinations__d1__Address,  value: "http://projects-api:8080/" }
+            - { name: ReverseProxy__Clusters__kpi__Destinations__d1__Address,       value: "http://kpi-api:8080/" }
+            - { name: ReverseProxy__Clusters__risk__Destinations__d1__Address,      value: "http://risk-api:8080/" }
+            - { name: ReverseProxy__Clusters__issues__Destinations__d1__Address,    value: "http://issues-api:8080/" }
+            - { name: ReverseProxy__Clusters__benefits__Destinations__d1__Address,  value: "http://benefits-api:8080/" }
+            - { name: ReverseProxy__Clusters__reporting__Destinations__d1__Address, value: "http://reporting-api:8080/" }
+            - { name: ReverseProxy__Clusters__identity__Destinations__d1__Address,  value: "http://identity-api:8080/" }
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests: { cpu: 200m, memory: 192Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  namespace: strategyops
+spec:
+  selector: { app: gateway }
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: strategyops
+  namespace: strategyops
+spec:
+  rules:
+    - host: strategyops.local
+      http:
+        paths:
+          # Only the gateway is exposed. Everything else is reachable inside the
+          # cluster and nowhere else - which is why each service still validates
+          # its own tokens: "inside the cluster" is not a trust boundary.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port: { number: 80 }
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: projects
+  namespace: strategyops
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: projects
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: { type: Utilization, averageUtilization: 70 }
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gateway
+  namespace: strategyops
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels: { app: gateway }

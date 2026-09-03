@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Projects.Api\StrategyOps.Projects.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Risk.Api\StrategyOps.Risk.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Issues.Api\StrategyOps.Issues.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Kpi.Api\StrategyOps.Kpi.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\StrategyOps.Benefits.Api\StrategyOps.Benefits.Api.csproj" />
+  </ItemGroup>
+
+</Project>
